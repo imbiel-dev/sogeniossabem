@@ -1,0 +1,148 @@
+<!-- desafios/quiz-ciencia-curiosidades.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Ciência & Curiosidades</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .quiz-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+    .pergunta {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .alternativas button {
+      display: block;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .resultado {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .acertou { color: lime; }
+    .errou { color: red; }
+    #proxima-btn {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div class="quiz-box">
+      <div class="pergunta" id="pergunta"></div>
+      <div class="alternativas" id="alternativas"></div>
+      <div class="resultado" id="resultado"></div>
+      <button id="proxima-btn" onclick="proximaPergunta()">Próxima Pergunta</button>
+      <button onclick="reiniciarQuiz()">🔄 Reiniciar Quiz</button>
+    </div>
+  </main>
+
+  <script>
+    const perguntas = [
+      { pergunta: "Qual o órgão mais energético do corpo humano?", opcoes: ["Coração", "Fígado", "Músculos", "Cérebro"], resposta: "Cérebro" },
+      { pergunta: "Por que dormimos?", opcoes: ["Para descansar os músculos", "Para consolidar memórias", "Para poupar oxigênio", "Para manter a temperatura"], resposta: "Para consolidar memórias" },
+      { pergunta: "Qual fenômeno acontece apenas no espaço?", opcoes: ["Vácuo absoluto", "Ausência de som", "Eclipses", "Gravidade"], resposta: "Ausência de som" },
+      { pergunta: "Qual desses animais pode viver mais de 100 anos?", opcoes: ["Tigre", "Elefante", "Tartaruga-gigante", "Orca"], resposta: "Tartaruga-gigante" },
+      { pergunta: "O que causa o arco-íris?", opcoes: ["Refração da luz solar na água", "Luz da lua", "Umidade do ar", "Movimento da Terra"], resposta: "Refração da luz solar na água" },
+      { pergunta: "Qual é o maior órgão do corpo humano?", opcoes: ["Fígado", "Pele", "Cérebro", "Pulmão"], resposta: "Pele" },
+      { pergunta: "O que é um buraco negro?", opcoes: ["Estrela em colapso", "Planeta escuro", "Vazio espacial", "Massa de gás"], resposta: "Estrela em colapso" },
+      { pergunta: "O que mantém a Lua em órbita da Terra?", opcoes: ["Velocidade da Lua", "Gravidade", "Força solar", "Rotação da Terra"], resposta: "Gravidade" },
+      { pergunta: "Qual desses elementos é essencial para respiração celular?", opcoes: ["Nitrogênio", "Glicose", "Oxigênio", "Hidrogênio"], resposta: "Oxigênio" },
+      { pergunta: "Qual planeta tem um dia mais longo que seu ano?", opcoes: ["Mercúrio", "Vênus", "Terra", "Marte"], resposta: "Vênus" },
+      { pergunta: "Qual o principal gás do efeito estufa?", opcoes: ["Oxigênio", "Gás carbônico", "Gás hélio", "Nitrogênio"], resposta: "Gás carbônico" },
+      { pergunta: "Quantos cromossomos tem um ser humano?", opcoes: ["46", "23", "44", "48"], resposta: "46" },
+      { pergunta: "Qual estrutura do olho detecta cores?", opcoes: ["Pupila", "Cone", "Bastonete", "Retina"], resposta: "Cone" },
+      { pergunta: "O que é fotossíntese?", opcoes: ["Respiração das plantas", "Geração de luz", "Produção de alimento com luz", "Filtragem do ar"], resposta: "Produção de alimento com luz" },
+      { pergunta: "O que forma as marés?", opcoes: ["Rotação da Terra", "Força do Sol", "Atração da Lua", "Pressão atmosférica"], resposta: "Atração da Lua" },
+      { pergunta: "Qual vitamina o Sol ajuda a produzir?", opcoes: ["A", "B12", "C", "D"], resposta: "D" },
+      { pergunta: "Quantos sentidos o ser humano possui tradicionalmente?", opcoes: ["5", "6", "4", "7"], resposta: "5" },
+      { pergunta: "O que é DNA?", opcoes: ["Ácido base", "Informação genética", "Molécula de proteína", "Energia celular"], resposta: "Informação genética" },
+      { pergunta: "Qual parte do cérebro controla emoções?", opcoes: ["Neocórtex", "Cerebelo", "Lobo frontal", "Sistema límbico"], resposta: "Sistema límbico" },
+      { pergunta: "Qual animal é considerado o mais inteligente depois dos humanos?", opcoes: ["Cachorro", "Polvo", "Golfinho", "Elefante"], resposta: "Golfinho" },
+      { pergunta: "O que é um átomo?", opcoes: ["Molécula de gás", "Partícula de luz", "Unidade básica da matéria", "Plasma"], resposta: "Unidade básica da matéria" },
+      { pergunta: "Qual é a substância que dá cor ao sangue?", opcoes: ["Plasma", "Hemoglobina", "Glóbulos brancos", "Glicose"], resposta: "Hemoglobina" },
+      { pergunta: "O que ocorre quando a luz branca atravessa um prisma?", opcoes: ["Fica azul", "Se dispersa em cores", "Desaparece", "Reflete"], resposta: "Se dispersa em cores" },
+      { pergunta: "Quantos planetas têm anéis visíveis?", opcoes: ["1", "2", "3", "4"], resposta: "4" },
+      { pergunta: "O que é a teoria da evolução?", opcoes: ["Mudança dos climas", "Origem do universo", "Processo de adaptação das espécies", "Criação do homem"], resposta: "Processo de adaptação das espécies" }
+    ];
+
+    let embaralhadas = [];
+    let indice = 0;
+    let acertos = 0;
+
+    function embaralharPerguntas() {
+      embaralhadas = [...perguntas].sort(() => 0.5 - Math.random());
+      indice = 0;
+      acertos = 0;
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      document.getElementById("resultado").innerText = "";
+      document.getElementById("proxima-btn").style.display = "none";
+      const atual = embaralhadas[indice];
+      document.getElementById("pergunta").innerText = atual.pergunta;
+      const alt = document.getElementById("alternativas");
+      alt.innerHTML = "";
+      atual.opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.innerText = opcao;
+        btn.onclick = () => verificarResposta(btn, opcao);
+        alt.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(botaoClicado, escolha) {
+      const correta = embaralhadas[indice].resposta;
+      const res = document.getElementById("resultado");
+      const botoes = document.querySelectorAll(".alternativas button");
+      botoes.forEach(btn => btn.disabled = true);
+
+      if (escolha === correta) {
+        res.innerHTML = '<span class="acertou">✅ Correto!</span>';
+        acertos++;
+        document.getElementById("proxima-btn").style.display = "inline-block";
+      } else {
+        res.innerHTML = `<span class="errou">❌ Errado. A resposta certa era: ${correta}`;
+      }
+    }
+
+    function proximaPergunta() {
+      indice++;
+      if (indice < embaralhadas.length) {
+        mostrarPergunta();
+      } else {
+        document.getElementById("pergunta").innerText = `Fim do Quiz! Você acertou ${acertos} de ${embaralhadas.length}.`;
+        document.getElementById("alternativas").innerHTML = "";
+        document.getElementById("proxima-btn").style.display = "none";
+      }
+    }
+
+    function reiniciarQuiz() {
+      embaralharPerguntas();
+      document.getElementById("resultado").innerText = "";
+    }
+
+    embaralharPerguntas();
+  </script>
+</body>
+</html>

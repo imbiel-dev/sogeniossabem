@@ -1,0 +1,151 @@
+<!-- desafios/quiz-conhecimentos-gerais.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Conhecimentos Gerais</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .quiz-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+    .pergunta {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .alternativas button {
+      display: block;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .resultado {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .acertou { color: lime; }
+    .errou { color: red; }
+    #proxima-btn {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="quiz-box">
+      <div class="pergunta" id="pergunta"></div>
+      <div class="alternativas" id="alternativas"></div>
+      <div class="resultado" id="resultado"></div>
+      <button id="proxima-btn" onclick="proximaPergunta()">Próxima Pergunta</button>
+      <button onclick="reiniciarQuiz()">🔄 Reiniciar Quiz</button>
+    </div>
+  </main>
+
+  <script>
+    const perguntas = [
+      { pergunta: "Qual é o maior planeta do Sistema Solar?", opcoes: ["Júpiter", "Saturno", "Terra", "Urano"], resposta: "Júpiter" },
+      { pergunta: "Quem escreveu \"Dom Quixote\"?", opcoes: ["Miguel de Cervantes", "Machado de Assis", "Shakespeare", "Tolstói"], resposta: "Miguel de Cervantes" },
+      { pergunta: "Qual é o elemento químico com símbolo O?", opcoes: ["Oxigênio", "Ouro", "Osmío", "Ozônio"], resposta: "Oxigênio" },
+      { pergunta: "Em que país fica a Torre Eiffel?", opcoes: ["França", "Itália", "Alemanha", "Espanha"], resposta: "França" },
+      { pergunta: "Quantos continentes existem?", opcoes: ["6", "5", "7", "4"], resposta: "7" },
+      { pergunta: "Qual é a capital do Japão?", opcoes: ["Tóquio", "Pequim", "Seul", "Bangkok"], resposta: "Tóquio" },
+      { pergunta: "Quem descobriu a América?", opcoes: ["Cristóvão Colombo", "Pedro Álvares Cabral", "Vasco da Gama", "Américo Vespúcio"], resposta: "Cristóvão Colombo" },
+      { pergunta: "Qual o maior oceano da Terra?", opcoes: ["Pacífico", "Atlântico", "Índico", "Ártico"], resposta: "Pacífico" },
+      { pergunta: "Qual animal é conhecido como o rei da selva?", opcoes: ["Leão", "Tigre", "Elefante", "Gorila"], resposta: "Leão" },
+      { pergunta: "Qual a língua oficial do Brasil?", opcoes: ["Português", "Espanhol", "Inglês", "Francês"], resposta: "Português" },
+      { pergunta: "Qual é o menor país do mundo?", opcoes: ["Vaticano", "Mônaco", "San Marino", "Liechtenstein"], resposta: "Vaticano" },
+      { pergunta: "Em que continente fica o Egito?", opcoes: ["África", "Ásia", "Europa", "América"], resposta: "África" },
+      { pergunta: "Quantos segundos tem uma hora?", opcoes: ["3600", "600", "1800", "2400"], resposta: "3600" },
+      { pergunta: "Quem pintou a Mona Lisa?", opcoes: ["Leonardo da Vinci", "Michelangelo", "Van Gogh", "Monet"], resposta: "Leonardo da Vinci" },
+      { pergunta: "Qual o nome do processo de transformação da água em vapor?", opcoes: ["Evaporação", "Condensação", "Fusão", "Sublimação"], resposta: "Evaporação" },
+      { pergunta: "Quantas cores tem o arco-íris?", opcoes: ["7", "6", "8", "9"], resposta: "7" },
+      { pergunta: "Qual é o rio mais longo do mundo?", opcoes: ["Nilo", "Amazonas", "Yangtzé", "Mississippi"], resposta: "Nilo" },
+      { pergunta: "Quem foi Albert Einstein?", opcoes: ["Físico", "Médico", "Artista", "Poeta"], resposta: "Físico" },
+      { pergunta: "Qual é o maior osso do corpo humano?", opcoes: ["Fêmur", "Tíbia", "Rádio", "Ulna"], resposta: "Fêmur" },
+      { pergunta: "Quantos planetas existem no Sistema Solar?", opcoes: ["8", "9", "7", "10"], resposta: "8" },
+      { pergunta: "Quem escreveu \"O Pequeno Príncipe\"?", opcoes: ["Antoine de Saint-Exupéry", "J.K. Rowling", "Monteiro Lobato", "George Orwell"], resposta: "Antoine de Saint-Exupéry" },
+      { pergunta: "Qual é a moeda oficial dos Estados Unidos?", opcoes: ["Dólar", "Euro", "Peso", "Libra"], resposta: "Dólar" },
+      { pergunta: "Qual é a capital da Austrália?", opcoes: ["Camberra", "Sydney", "Melbourne", "Perth"], resposta: "Camberra" },
+      { pergunta: "Qual é o principal ingrediente do guacamole?", opcoes: ["Abacate", "Tomate", "Pepino", "Milho"], resposta: "Abacate" },
+      { pergunta: "Qual país tem formato aproximado de uma bota?", opcoes: ["Itália", "Chile", "Índia", "Grécia"], resposta: "Itália" },
+      { pergunta: "Quem foi o primeiro homem a pisar na Lua?", opcoes: ["Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "Alan Shepard"], resposta: "Neil Armstrong" }
+    ];
+
+    let embaralhadas = [];
+    let indice = 0;
+    let acertos = 0;
+
+    function embaralharPerguntas() {
+      embaralhadas = [...perguntas].sort(() => 0.5 - Math.random());
+      indice = 0;
+      acertos = 0;
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      document.getElementById("resultado").innerText = "";
+      document.getElementById("proxima-btn").style.display = "none";
+      const atual = embaralhadas[indice];
+      document.getElementById("pergunta").innerText = atual.pergunta;
+      const alt = document.getElementById("alternativas");
+      alt.innerHTML = "";
+      atual.opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.innerText = opcao;
+        btn.onclick = () => verificarResposta(btn, opcao);
+        alt.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(botaoClicado, escolha) {
+      const correta = embaralhadas[indice].resposta;
+      const res = document.getElementById("resultado");
+      const botoes = document.querySelectorAll(".alternativas button");
+      botoes.forEach(btn => btn.disabled = true);
+
+      if (escolha === correta) {
+        res.innerHTML = '<span class="acertou">✅ Correto!</span>';
+        acertos++;
+      } else {
+        res.innerHTML = `<span class="errou">❌ Errado. A resposta certa era: ${correta}`;
+      }
+
+      document.getElementById("proxima-btn").style.display = "inline-block";
+    }
+
+    function proximaPergunta() {
+      indice++;
+      if (indice < embaralhadas.length) {
+        mostrarPergunta();
+      } else {
+        document.getElementById("pergunta").innerText = `Fim do Quiz! Você acertou ${acertos} de ${embaralhadas.length}.`;
+        document.getElementById("alternativas").innerHTML = "";
+        document.getElementById("proxima-btn").style.display = "none";
+      }
+    }
+
+    function reiniciarQuiz() {
+      embaralharPerguntas();
+      document.getElementById("resultado").innerText = "";
+    }
+
+    embaralharPerguntas();
+  </script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!-- einstein.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio de Einstein</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: center;
+      transition: background-color 0.3s, border 0.3s;
+    }
+    th {
+      background-color: var(--roxo);
+    }
+    select {
+      width: 100%;
+      padding: 5px;
+    }
+    #verificar {
+      margin-top: 20px;
+    }
+    .dicas {
+      text-align: left;
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      max-width: 800px;
+    }
+    .dicas h3 {
+      color: var(--roxo);
+      margin-top: 0;
+    }
+    .dicas ol {
+      padding-left: 20px;
+    }
+    .dicas li {
+      margin-bottom: 8px;
+    }
+    .acerto {
+      animation: brilho 1s infinite alternate;
+      border: 3px solid #00ff88 !important;
+    }
+    @keyframes brilho {
+      from {
+        box-shadow: 0 0 10px #00ff88;
+      }
+      to {
+        box-shadow: 0 0 20px #00ff88;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Desafio de Einstein 🧠</h2>
+    <p>Segundo Einstein, apenas 2% da população consegue resolver este desafio. Será que você é um deles?</p>
+
+    <div class="dicas">
+      <h3>Dicas:</h3>
+      <ol>
+        <li>O britânico vive na casa vermelha.</li>
+        <li>O sueco tem cachorros como animal de estimação.</li>
+        <li>O dinamarquês bebe chá.</li>
+        <li>A casa verde está imediatamente à esquerda da casa branca.</li>
+        <li>O morador da casa verde bebe café.</li>
+        <li>A pessoa que fuma Pall Mall cria pássaros.</li>
+        <li>O morador da casa amarela fuma Dunhill.</li>
+        <li>O homem que vive na casa do centro bebe leite.</li>
+        <li>O norueguês vive na primeira casa.</li>
+        <li>O homem que fuma Blends vive ao lado do que tem gatos.</li>
+        <li>O homem que tem cavalos vive ao lado do que fuma Dunhill.</li>
+        <li>O homem que fuma BlueMaster bebe cerveja.</li>
+        <li>O alemão fuma Prince.</li>
+        <li>O norueguês vive ao lado da casa azul.</li>
+        <li>O homem que fuma Blends tem um vizinho que bebe água.</li>
+      </ol>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Casa 1</th>
+          <th>Casa 2</th>
+          <th>Casa 3</th>
+          <th>Casa 4</th>
+          <th>Casa 5</th>
+        </tr>
+      </thead>
+      <tbody id="tabela-einstein"></tbody>
+    </table>
+
+    <button id="verificar" onclick="verificarSolucao()">Verificar Resposta</button>
+    <p id="resultado"></p>
+  </main>
+
+  <script>
+    const categorias = ['Cor', 'Nacionalidade', 'Bebida', 'Cigarro', 'Animal'];
+    const opcoes = {
+      Cor: ['Vermelha', 'Verde', 'Branca', 'Amarela', 'Azul'],
+      Nacionalidade: ['Britânico', 'Sueco', 'Dinamarquês', 'Norueguês', 'Alemão'],
+      Bebida: ['Chá', 'Café', 'Leite', 'Cerveja', 'Água'],
+      Cigarro: ['Pall Mall', 'Dunhill', 'Blends', 'BlueMaster', 'Prince'],
+      Animal: ['Cachorro', 'Pássaro', 'Gato', 'Cavalo', 'Peixe']
+    };
+
+    const corHex = {
+      Vermelha: '#ff4d4d',
+      Verde: '#2ecc71',
+      Branca: '#ffffff',
+      Amarela: '#f1c40f',
+      Azul: '#3498db'
+    };
+
+    const respostas = {
+      Cor: ['Amarela', 'Azul', 'Vermelha', 'Verde', 'Branca'],
+      Nacionalidade: ['Norueguês', 'Dinamarquês', 'Britânico', 'Alemão', 'Sueco'],
+      Bebida: ['Água', 'Chá', 'Leite', 'Café', 'Cerveja'],
+      Cigarro: ['Dunhill', 'Blends', 'Pall Mall', 'Prince', 'BlueMaster'],
+      Animal: ['Gato', 'Cavalo', 'Pássaro', 'Peixe', 'Cachorro']
+    };
+
+    const tabela = document.getElementById("tabela-einstein");
+
+    categorias.forEach(categoria => {
+      const tr = document.createElement("tr");
+      for (let i = 0; i < 5; i++) {
+        const td = document.createElement("td");
+        const select = document.createElement("select");
+        select.name = `${categoria}-${i}`;
+        const defaultOption = document.createElement("option");
+        defaultOption.text = categoria;
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        select.appendChild(defaultOption);
+
+        opcoes[categoria].forEach(opcao => {
+          const option = document.createElement("option");
+          option.value = opcao;
+          option.text = opcao;
+          select.appendChild(option);
+        });
+
+        if (categoria === 'Cor') {
+          select.addEventListener('change', () => {
+            const coluna = i;
+            const cor = corHex[select.value] || 'transparent';
+            const tds = document.querySelectorAll(`td:nth-child(${coluna + 1})`);
+            tds.forEach(td => {
+              td.style.backgroundColor = cor;
+            });
+          });
+        }
+
+        td.appendChild(select);
+        tr.appendChild(td);
+      }
+      tabela.appendChild(tr);
+    });
+
+    function verificarSolucao() {
+      let correto = true;
+      categorias.forEach((categoria, linha) => {
+        for (let col = 0; col < 5; col++) {
+          const seletor = document.getElementsByName(`${categoria}-${col}`)[0];
+          if (seletor.value !== respostas[categoria][col]) {
+            correto = false;
+          }
+        }
+      });
+
+      const resultado = document.getElementById("resultado");
+      const tds = document.querySelectorAll("td");
+      if (correto) {
+        resultado.innerText = "🎉 Você é um gênio! Parabéns por resolver o Desafio de Einstein!";
+        tds.forEach(td => td.classList.add("acerto"));
+      } else {
+        resultado.innerText = "Ainda não! Revise suas escolhas e tente novamente.";
+        tds.forEach(td => td.classList.remove("acerto"));
+      }
+    }
+  </script>
+</body>
+</html>

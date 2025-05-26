@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Só os Gênios Sabem - O Código dos 5 Números</title>
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0 10px 40px;
+      text-align: center;
+    }
+    header {
+      padding: 20px 0;
+      margin-bottom: 25px;
+    }
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #1e1e1e;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      padding: 25px 30px;
+    }
+    button {
+      background: #9c27b0;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      margin: 10px 5px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      white-space: normal;
+      min-height: 50px;
+      text-align: left;
+      flex: 1 1 calc(45%);
+      max-width: 400px;
+    }
+    button:hover:not(:disabled) {
+      background: #ab47bc;
+    }
+    button:disabled {
+      background: #6a1b9a;
+      cursor: default;
+    }
+    #perguntas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    input[type=number] {
+      width: 50px;
+      padding: 5px;
+      font-size: 1rem;
+      margin: 0 5px 15px;
+      border-radius: 6px;
+      border: none;
+      text-align: center;
+    }
+    #respostas {
+      margin-top: 20px;
+      max-height: 220px;
+      overflow-y: auto;
+      background: #2a2a2a;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: left;
+      font-size: 0.95rem;
+      line-height: 1.3;
+    }
+    #resultado {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-top: 25px;
+      min-height: 40px;
+    }
+    .btn-group {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <p>Descubra a sequência secreta de 5 números únicos entre 1 e 10. Escolha até <strong>10 perguntas</strong> para receber respostas antes de tentar adivinhar.</p>
+    <div id="perguntas"></div>
+    <div id="respostas"></div>
+    <div id="tentativa" style="display:none;">
+      <p>Digite os 5 números na ordem correta:</p>
+      <input type="number" min="1" max="10" id="n1" />
+      <input type="number" min="1" max="10" id="n2" />
+      <input type="number" min="1" max="10" id="n3" />
+      <input type="number" min="1" max="10" id="n4" />
+      <input type="number" min="1" max="10" id="n5" />
+      <div class="btn-group">
+        <button id="verificarBtn" onclick="verificarResposta()">Verificar</button>
+        <button onclick="reiniciarJogo()">Reiniciar</button>
+      </div>
+    </div>
+    <div id="resultado"></div>
+  </main>
+
+<script>
+  const perguntas = [
+    ["Quantos números pares há na sequência?", () => seq.filter(n => n % 2 === 0).length],
+    ["Quantos números maiores que 5 existem na sequência?", () => seq.filter(n => n > 5).length],
+    ["A soma total dos 5 números é maior que 25?", () => (seq.reduce((a,b)=>a+b,0) > 25 ? "Sim" : "Não")],
+    ["A soma total dos 5 números é maior que 30?", () => (seq.reduce((a,b)=>a+b,0) > 30 ? "Sim" : "Não")],
+    ["Os números estão em ordem crescente em alguma parte da sequência (3 consecutivos)?", () => seq.some((_,i) => seq[i+2] !== undefined && seq[i] < seq[i+1] && seq[i+1] < seq[i+2]) ? "Sim" : "Não"],
+    ["Qual é o menor número da sequência?", () => Math.min(...seq)],
+    ["Qual é a soma dos números nas posições 1 e 3?", () => seq[0] + seq[2]],
+    ["Qual é o maior número entre as posições 2, 4 e 5?", () => Math.max(seq[1], seq[3], seq[4])],
+    ["Qual é a diferença entre os números nas posições 1 e 5?", () => Math.abs(seq[0] - seq[4])],
+    ["Qual é o produto (multiplicação) dos números nas posições 2 e 4?", () => seq[1] * seq[3]],
+    ["A média dos números nas posições 2 e 3 é maior que 5?", () => ((seq[1] + seq[2]) / 2 > 5 ? "Sim" : "Não")],
+    ["Existe algum número maior que 8 na posição 2 ou 4?", () => (seq[1] > 8 || seq[3] > 8 ? "Sim" : "Não")],
+    ["O número na posição 3 é maior que 5?", () => (seq[2] > 5 ? "Sim" : "Não")],
+    ["Qual é o número ímpar que aparece mais à esquerda?", () => seq.find(n => n % 2 === 1) ?? "Nenhum"],
+    ["O número na posição 2 é maior que o número na posição 4?", () => (seq[1] > seq[3] ? "Sim" : "Não")],
+    ["O número na posição 5 é menor que o número na posição 1?", () => (seq[4] < seq[0] ? "Sim" : "Não")],
+    ["Os números nas posições 1, 2 e 3 formam uma sequência crescente ou decrescente?", () => {
+      let a = seq[0], b = seq[1], c = seq[2];
+      return (a < b && b < c) || (a > b && b > c) ? "Sim" : "Não";
+    }],
+    ["As posições 2 e 5 têm o mesmo tipo (ambos pares ou ambos ímpares)?", () => ((seq[1] % 2) === (seq[4] % 2) ? "Sim" : "Não")],
+    ["A soma dos números nas posições 2 e 5 é par?", () => (((seq[1] + seq[4]) % 2 === 0) ? "Sim" : "Não")],
+    ["A multiplicação dos números nas posições 1 e 2 é maior que 20?", () => ((seq[0] * seq[1] > 20) ? "Sim" : "Não")],
+    ["A diferença entre o maior e o menor número da sequência é maior que 5?", () => ((Math.max(...seq) - Math.min(...seq)) > 5 ? "Sim" : "Não")],
+    ["Existe o número 10 na sequência?", () => (seq.includes(10) ? "Sim" : "Não")],
+    ["A sequência contém algum número primo?", () => {
+      const primos = [2,3,5,7];
+      return seq.some(n => primos.includes(n)) ? "Sim" : "Não";
+    }],
+    ["Há mais números ímpares do que pares?", () => {
+      const pares = seq.filter(n => n % 2 === 0).length;
+      const impares = seq.length - pares;
+      return impares > pares ? "Sim" : "Não";
+    }],
+    ["O número na posição 4 é menor que 5?", () => (seq[3] < 5 ? "Sim" : "Não")]
+  ];
+
+  let seq = [];
+  let perguntasFeitas = 0;
+  const maxPerguntas = 10;
+
+  function embaralhar(lista) {
+    for (let i = lista.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [lista[i], lista[j]] = [lista[j], lista[i]];
+    }
+    return lista;
+  }
+
+  function gerarSequencia() {
+    const numeros = embaralhar([1,2,3,4,5,6,7,8,9,10]);
+    seq = numeros.slice(0, 5);
+  }
+
+  function montarPerguntas() {
+    const div = document.getElementById("perguntas");
+    div.innerHTML = "";
+    perguntas.forEach((p, i) => {
+      const btn = document.createElement("button");
+      btn.textContent = p[0];
+      btn.onclick = () => responderPergunta(i, btn);
+      div.appendChild(btn);
+    });
+    document.getElementById("respostas").innerHTML = "";
+    document.getElementById("tentativa").style.display = "none";
+    document.getElementById("resultado").innerHTML = "";
+    perguntasFeitas = 0;
+  }
+
+  function responderPergunta(i, btn) {
+    if (perguntasFeitas >= maxPerguntas) return;
+    const resposta = perguntas[i][1]();
+    const respostasDiv = document.getElementById("respostas");
+    respostasDiv.innerHTML += `<p><strong>${perguntas[i][0]}</strong><br>Resposta: ${resposta}</p>`;
+    perguntasFeitas++;
+    btn.disabled = true;
+    if (perguntasFeitas >= maxPerguntas) {
+      document.getElementById("tentativa").style.display = "block";
+      // Desabilitar todas perguntas restantes
+      const botoes = document.querySelectorAll("#perguntas button:not(:disabled)");
+      botoes.forEach(b => b.disabled = true);
+    }
+  }
+
+  function verificarResposta() {
+  const tentativa = [1,2,3,4,5].map(i => parseInt(document.getElementById(`n${i}`).value));
+  const correto = JSON.stringify(tentativa) === JSON.stringify(seq);
+  const resultadoDiv = document.getElementById("resultado");
+  const verificarBtn = document.getElementById("verificarBtn");
+  if (correto) {
+    resultadoDiv.innerHTML = "<span style='color:lightgreen'>🔐 Você quebrou o código. A mente por trás da sequência foi desvendada!</span>";
+  } else {
+    resultadoDiv.innerHTML = "<span style='color:crimson'>❌ A sequência está errada. Reinicie o jogo.</span>";
+  }
+  verificarBtn.disabled = true;
+  // Desabilita todos botões de perguntas para travar após a tentativa
+  document.querySelectorAll("#perguntas button").forEach(b => b.disabled = true);
+}
+
+  function reiniciarJogo() {
+    gerarSequencia();
+    montarPerguntas();
+    document.getElementById("n1").value = "";
+    document.getElementById("n2").value = "";
+    document.getElementById("n3").value = "";
+    document.getElementById("n4").value = "";
+    document.getElementById("n5").value = "";
+    document.getElementById("resultado").innerHTML = "";
+    document.getElementById("respostas").innerHTML = "";
+  }
+
+  reiniciarJogo();
+</script>
+</body>
+</html>

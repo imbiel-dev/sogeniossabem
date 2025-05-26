@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio: O Conselho das Eras</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body { background: #111; color: #fff; font-family: Arial, sans-serif; text-align: center; }
+    main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #1e1e1e;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    }
+    table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+    th, td {
+      border: 1px solid #444;
+      padding: 8px;
+    }
+    select {
+      width: 100%;
+      padding: 5px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      margin: 20px 10px 0;
+      padding: 12px 25px;
+      font-size: 1rem;
+      background-color: #9c27b0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ab47bc;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    #pistas {
+      text-align: left;
+      margin-top: 30px;
+      background: #222;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>🧠 Desafio: O Conselho das Eras</h2>
+    <p>Descubra a combinação correta dos 10 Anciões com base em pistas lógicas complexas.</p>
+
+    <table id="tabela">
+      <thead>
+        <tr>
+          <th>Posição</th>
+          <th>Era</th>
+          <th>Elemento</th>
+          <th>Símbolo</th>
+          <th>Cor da Túnica</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button onclick="verificarResposta()">Verificar Resposta</button>
+    <button onclick="reiniciarJogo()">Reiniciar</button>
+    <div id="resultado"></div>
+
+    <div id="pistas">
+      <h3>📜 Pistas:</h3>
+      <ul>
+        <li>1. O Ancião da Era do Sangue senta à esquerda daquele que veste túnica Roxa.</li>
+        <li>2. O portador do Símbolo do Tetraedro domina o Elemento Fogo.</li>
+        <li>3. O Ancião na posição 6 está entre os Anciões da Luz e do Vácuo.</li>
+        <li>4. O usuário do Elemento Magma senta exatamente no meio do Conselho.</li>
+        <li>5. A túnica Verde não está ao lado da túnica Branca.</li>
+        <li>6. O Símbolo da Chave está na mesma fileira que a túnica Dourada.</li>
+        <li>7. O Ancião da Era do Vapor está à esquerda do que possui o Símbolo do Sol.</li>
+        <li>8. O portador do Elemento Gelo usa a túnica Prateada.</li>
+        <li>9. Quem carrega o Símbolo do Triângulo está à direita da Era do Bronze.</li>
+        <li>10. O Ancião com o Elemento Raio senta entre o da túnica Verde e o da Vermelha.</li>
+        <li>11. O Ancião com o Símbolo da Lua está à direita do que possui o Elemento Água.</li>
+        <li>12. O usuário do Símbolo do Lótus está próximo do Ancião da Era das Trevas.</li>
+        <li>13. A túnica Azul pertence ao primeiro assento.</li>
+        <li>14. O Elemento Plasma está à direita da túnica Marrom.</li>
+        <li>15. O Ancião do Símbolo do Olho não está ao lado do Ancião da Luz.</li>
+        <li>16. A Cruz está entre o Tetraedro e o Triângulo.</li>
+        <li>17. O usuário do Elemento Sombra usa a túnica Roxa.</li>
+        <li>18. O Ancião da Era do Vácuo está à direita do da Era de Gelo.</li>
+        <li>19. A túnica Dourada está à esquerda da túnica Verde.</li>
+        <li>20. O Símbolo do Sol está diretamente à direita do Símbolo da Serpente.</li>
+        <li>21. O Ancião do Elemento Ar não está no canto.</li>
+        <li>22. A Era do Ferro ocupa a primeira posição.</li>
+        <li>23. A Estrela está exatamente duas posições à esquerda do Elemento Metal.</li>
+        <li>24. O Símbolo da Chave não está no mesmo lugar da túnica Prateada.</li>
+        <li>25. O último Ancião usa a túnica Laranja.</li>
+      </ul>
+    </div>
+  </main>
+
+  <script>
+    const eras = ["Pedra", "Bronze", "Ferro", "Gelo", "Sangue", "Luz", "Trevas", "Vapor", "Tempestade", "Vácuo"];
+    const elementos = ["Terra", "Água", "Fogo", "Ar", "Metal", "Raio", "Gelo", "Sombra", "Plasma", "Magma"];
+    const simbolos = ["Sol", "Lua", "Estrela", "Cruz", "Tetraedro", "Triângulo", "Olho", "Chave", "Serpente", "Lótus"];
+    const cores = ["Vermelha", "Azul", "Verde", "Preta", "Branca", "Roxa", "Dourada", "Prateada", "Laranja", "Marrom"];
+
+    const respostaCorreta = [
+      ["Ferro", "Fogo", "Tetraedro", "Azul"],
+      ["Sangue", "Terra", "Cruz", "Preta"],
+      ["Luz", "Água", "Chave", "Dourada"],
+      ["Vapor", "Ar", "Lua", "Branca"],
+      ["Gelo", "Raio", "Serpente", "Verde"],
+      ["Vácuo", "Magma", "Sol", "Vermelha"],
+      ["Bronze", "Gelo", "Estrela", "Prateada"],
+      ["Pedra", "Metal", "Triângulo", "Marrom"],
+      ["Trevas", "Sombra", "Lótus", "Roxa"],
+      ["Tempestade", "Plasma", "Olho", "Laranja"]
+    ];
+
+    function criarTabela() {
+      const tbody = document.querySelector("#tabela tbody");
+      tbody.innerHTML = "";
+      for (let i = 0; i < 10; i++) {
+        const row = document.createElement("tr");
+        const posCell = document.createElement("td");
+        posCell.textContent = i + 1;
+        row.appendChild(posCell);
+
+        [eras, elementos, simbolos, cores].forEach(lista => {
+          const td = document.createElement("td");
+          const select = document.createElement("select");
+          const optVazio = document.createElement("option");
+          optVazio.value = "";
+        optVazio.textContent = "—";
+        optVazio.disabled = true;
+        optVazio.selected = true;
+        select.appendChild(optVazio);
+
+        lista.forEach(opcao => {
+        const opt = document.createElement("option");
+        opt.value = opcao;
+        opt.textContent = opcao;
+        select.appendChild(opt);
+        });
+          td.appendChild(select);
+          row.appendChild(td);
+        });
+        tbody.appendChild(row);
+      }
+    }
+
+    function verificarResposta() {
+      const linhas = document.querySelectorAll("#tabela tbody tr");
+      let corretos = 0;
+      linhas.forEach((linha, i) => {
+        const selects = linha.querySelectorAll("select");
+        const resposta = respostaCorreta[i];
+        let acertosLinha = 0;
+        selects.forEach((select, j) => {
+          if (select.value === resposta[j]) acertosLinha++;
+        });
+        if (acertosLinha === 4) corretos++;
+      });
+      const resultado = document.getElementById("resultado");
+      if (corretos === 10) {
+        resultado.textContent = "🔓 Você solucionou o Conselho das Eras perfeitamente!";
+        resultado.style.color = "lightgreen";
+      } else {
+        resultado.textContent = `Você acertou ${corretos} de 10 anciões. Continue tentando!`;
+        resultado.style.color = "orange";
+      }
+    }
+
+    function reiniciarJogo() {
+      criarTabela();
+      document.getElementById("resultado").textContent = "";
+    }
+
+    criarTabela();
+  </script>
+</body>
+</html>

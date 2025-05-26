@@ -1,0 +1,135 @@
+<!-- desafios/desafio-da-senha.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio da Senha</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    main {
+      text-align: center;
+    }
+    input[type='number'] {
+      width: 50px;
+      font-size: 1.2rem;
+      text-align: center;
+      margin: 5px;
+    }
+    #tentativas {
+      margin-top: 20px;
+    }
+    .resultado {
+      background-color: #1a1a1a;
+      padding: 10px;
+      border-radius: 8px;
+      margin: 5px auto;
+      max-width: 400px;
+    }
+    .vitoria {
+      color: lime;
+      font-weight: bold;
+    }
+    .falha {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Desafio da Senha Secreta 🔐</h2>
+    <p>Descubra a senha de 4 dígitos únicos entre 0 e 9. Após cada tentativa, diremos:</p>
+    <ul style="text-align:left; max-width:600px; margin:auto;">
+      <li>✅ Quantos estão corretos e na posição correta.</li>
+      <li>⚠️ Quantos estão corretos, mas na posição errada.</li>
+    </ul>
+
+    <div>
+      <input type="number" id="d1" min="0" max="9">
+      <input type="number" id="d2" min="0" max="9">
+      <input type="number" id="d3" min="0" max="9">
+      <input type="number" id="d4" min="0" max="9">
+    </div>
+    <button onclick="tentarSenha()">Tentar</button>
+    <button onclick="reiniciar()">🔄 Nova Senha</button>
+
+    <div id="tentativas"></div>
+    <p id="resultado"></p>
+  </main>
+
+  <script>
+    let senha = [];
+    let tentativas = 0;
+    const maxTentativas = 15;
+
+    function gerarSenha() {
+      senha = [];
+      while (senha.length < 4) {
+        let num = Math.floor(Math.random() * 10);
+        if (!senha.includes(num)) senha.push(num);
+      }
+    }
+
+    function tentarSenha() {
+      if (tentativas >= maxTentativas) return;
+
+      let tentativa = [
+        parseInt(document.getElementById('d1').value),
+        parseInt(document.getElementById('d2').value),
+        parseInt(document.getElementById('d3').value),
+        parseInt(document.getElementById('d4').value)
+      ];
+
+      if (new Set(tentativa).size < 4) {
+        alert("Cada dígito deve ser único.");
+        return;
+      }
+
+      let corretos = 0;
+      let deslocados = 0;
+
+      tentativa.forEach((num, i) => {
+        if (senha[i] === num) {
+          corretos++;
+        } else if (senha.includes(num)) {
+          deslocados++;
+        }
+      });
+
+      tentativas++;
+
+      let log = document.createElement('div');
+      log.classList.add('resultado');
+      log.innerText = `Tentativa ${tentativas}: [${tentativa.join(', ')}] → ✅ ${corretos} no lugar certo, ⚠️ ${deslocados} no lugar errado.`;
+      document.getElementById('tentativas').appendChild(log);
+
+      if (corretos === 4) {
+        document.getElementById('resultado').innerHTML = '<span class="vitoria">🎉 Parabéns! Você descobriu a senha!</span>';
+      } else if (tentativas >= maxTentativas) {
+        document.getElementById('resultado').innerHTML = `<span class="falha">💥 Você falhou! A senha era: ${senha.join('')}</span>`;
+      }
+    }
+
+    function reiniciar() {
+      gerarSenha();
+      tentativas = 0;
+      document.getElementById('tentativas').innerHTML = '';
+      document.getElementById('resultado').innerText = '';
+      ["d1","d2","d3","d4"].forEach(id => document.getElementById(id).value = '');
+    }
+
+    gerarSenha();
+  </script>
+</body>
+</html>

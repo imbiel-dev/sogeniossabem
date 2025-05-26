@@ -1,0 +1,150 @@
+<!-- desafios/quiz-interpretacao-frases.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Interpretação de Frases</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .quiz-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+    .pergunta {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .alternativas button {
+      display: block;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .resultado {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .acertou { color: lime; }
+    .errou { color: red; }
+    #proxima-btn {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="quiz-box">
+      <div class="pergunta" id="pergunta"></div>
+      <div class="alternativas" id="alternativas"></div>
+      <div class="resultado" id="resultado"></div>
+      <button id="proxima-btn" onclick="proximaPergunta()">Próxima Pergunta</button>
+      <button onclick="reiniciarQuiz()">🔄 Reiniciar Quiz</button>
+    </div>
+  </main>
+
+  <script>
+    const perguntas = [
+      { pergunta: "\"Apesar da chuva, fomos ao parque.\" O que essa frase indica?", opcoes: ["Contraste", "Causa", "Consequência", "Tempo"], resposta: "Contraste" },
+      { pergunta: "\"Ele correu tanto que ficou sem fôlego.\" A parte \"que ficou sem fôlego\" indica:", opcoes: ["Consequência", "Tempo", "Comparativo", "Condicional"], resposta: "Consequência" },
+      { pergunta: "\"Se estudasse mais, passaria na prova.\" A frase expressa:", opcoes: ["Condição", "Tempo", "Opinião", "Afirmação"], resposta: "Condição" },
+      { pergunta: "\"Estava tão cansado que dormiu no chão.\" O trecho \"que dormiu no chão\" representa:", opcoes: ["Consequência", "Contraste", "Dúvida", "Comparativo"], resposta: "Consequência" },
+      { pergunta: "\"Não foi à festa porque estava doente.\" Qual a relação entre as oracões?", opcoes: ["Causa", "Condição", "Contraste", "Finalidade"], resposta: "Causa" },
+      { pergunta: "\"Maria leu o livro antes de dormir.\" A expressão \"antes de dormir\" indica:", opcoes: ["Tempo", "Causa", "Condição", "Finalidade"], resposta: "Tempo" },
+      { pergunta: "\"Mesmo sem dinheiro, ele ajudou o amigo.\" Essa frase traz uma ideia de:", opcoes: ["Contraste", "Causa", "Tempo", "Afirmação"], resposta: "Contraste" },
+      { pergunta: "\"João estuda para passar no vestibular.\" A expressão \"para passar no vestibular\" indica:", opcoes: ["Finalidade", "Tempo", "Causa", "Comparativo"], resposta: "Finalidade" },
+      { pergunta: "\"Ela falou baixo para não acordar o bebê.\" A expressão sublinhada indica:", opcoes: ["Finalidade", "Causa", "Consequência", "Modo"], resposta: "Finalidade" },
+      { pergunta: "\"Embora estivesse cansado, continuou trabalhando.\" A frase apresenta ideia de:", opcoes: ["Concessão", "Causa", "Tempo", "Opinião"], resposta: "Concessão" },
+      { pergunta: "\"Assim que chegou, ligou o computador.\" Qual a ideia da expressão \"assim que\"?", opcoes: ["Tempo", "Causa", "Consequência", "Comparativo"], resposta: "Tempo" },
+      { pergunta: "\"Ela trabalha como professora.\" A expressão \"como\" indica:", opcoes: ["Função", "Comparativo", "Modo", "Condição"], resposta: "Função" },
+      { pergunta: "\"Ele age como se fosse o chefe.\" Nesse caso, \"como se\" expressa:", opcoes: ["Comparativo", "Condição", "Tempo", "Finalidade"], resposta: "Comparativo" },
+      { pergunta: "\"Se você quiser, podemos ir agora.\" Qual a relação?", opcoes: ["Condição", "Tempo", "Causa", "Afirmação"], resposta: "Condição" },
+      { pergunta: "\"Por mais que tente, não consegue.\" Essa frase expressa:", opcoes: ["Concessão", "Condição", "Tempo", "Causa"], resposta: "Concessão" },
+      { pergunta: "\"Ele não saiu, embora estivesse com vontade.\" A palavra \"embora\" indica:", opcoes: ["Concessão", "Causa", "Tempo", "Finalidade"], resposta: "Concessão" },
+      { pergunta: "\"Gosto de estudar quando está tranquilo.\" A expressão \"quando está tranquilo\" indica:", opcoes: ["Tempo", "Condição", "Causa", "Finalidade"], resposta: "Tempo" },
+      { pergunta: "\"Caso você ligue, avise.\" A expressão \"caso\" expressa:", opcoes: ["Condição", "Tempo", "Finalidade", "Comparativo"], resposta: "Condição" },
+      { pergunta: "\"Desde que chegou, está animado.\" Qual a ideia da expressão \"desde que\"?", opcoes: ["Tempo", "Causa", "Finalidade", "Afirmação"], resposta: "Tempo" },
+      { pergunta: "\"Para que você entenda, preciso explicar melhor.\" A expressão \"para que\" indica:", opcoes: ["Finalidade", "Causa", "Tempo", "Comparativo"], resposta: "Finalidade" },
+      { pergunta: "\"Ele falou de modo que todos entendessem.\" A expressão \"de modo que\" indica:", opcoes: ["Consequência", "Modo", "Comparativo", "Afirmação"], resposta: "Consequência" },
+      { pergunta: "\"Ela canta como um anjo.\" A expressão \"como\" indica:", opcoes: ["Comparativo", "Função", "Causa", "Tempo"], resposta: "Comparativo" },
+      { pergunta: "\"Embora tivesse medo, entrou na caverna.\" O trecho \"embora tivesse medo\" indica:", opcoes: ["Concessão", "Causa", "Tempo", "Condicional"], resposta: "Concessão" },
+      { pergunta: "\"Assim que acordou, tomou café.\" A ideia transmitida é de:", opcoes: ["Tempo", "Finalidade", "Causa", "Comparativo"], resposta: "Tempo" },
+      { pergunta: "\"Ela saiu tão rápido que nem se despediu.\" O trecho final indica:", opcoes: ["Consequência", "Causa", "Condição", "Tempo"], resposta: "Consequência" }
+    ];
+
+    let embaralhadas = [];
+    let indice = 0;
+    let acertos = 0;
+
+    function embaralharPerguntas() {
+      embaralhadas = [...perguntas].sort(() => 0.5 - Math.random());
+      indice = 0;
+      acertos = 0;
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      document.getElementById("resultado").innerText = "";
+      document.getElementById("proxima-btn").style.display = "none";
+      const atual = embaralhadas[indice];
+      document.getElementById("pergunta").innerText = atual.pergunta;
+      const alt = document.getElementById("alternativas");
+      alt.innerHTML = "";
+      atual.opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.innerText = opcao;
+        btn.onclick = () => verificarResposta(btn, opcao);
+        alt.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(botaoClicado, escolha) {
+      const correta = embaralhadas[indice].resposta;
+      const res = document.getElementById("resultado");
+      const botoes = document.querySelectorAll(".alternativas button");
+      botoes.forEach(btn => btn.disabled = true);
+
+      if (escolha === correta) {
+        res.innerHTML = '<span class="acertou">✅ Correto!</span>';
+        acertos++;
+      } else {
+        res.innerHTML = `<span class="errou">❌ Errado. A resposta certa era: ${correta}`;
+      }
+
+      document.getElementById("proxima-btn").style.display = "inline-block";
+    }
+
+    function proximaPergunta() {
+      indice++;
+      if (indice < embaralhadas.length) {
+        mostrarPergunta();
+      } else {
+        document.getElementById("pergunta").innerText = `Fim do Quiz! Você acertou ${acertos} de ${embaralhadas.length}.`;
+        document.getElementById("alternativas").innerHTML = "";
+        document.getElementById("proxima-btn").style.display = "none";
+      }
+    }
+
+    function reiniciarQuiz() {
+      embaralharPerguntas();
+      document.getElementById("resultado").innerText = "";
+    }
+
+    embaralharPerguntas();
+  </script>
+</body>
+</html>

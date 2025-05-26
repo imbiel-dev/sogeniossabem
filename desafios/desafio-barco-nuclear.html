@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio: Cientistas, Mutantes e o Barco Nuclear</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body { background: #111; color: #fff; font-family: Arial, sans-serif; text-align: center; }
+    main {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #1e1e1e;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    }
+    .lado { display: flex; justify-content: space-between; margin: 20px 0; }
+    .bloco { width: 45%; background: #222; padding: 15px; border-radius: 10px; }
+    .bloco h3 { margin-top: 0; }
+    .personagem { margin: 5px 0; padding: 10px; background: #333; border-radius: 5px; cursor: pointer; user-select: none; }
+    .inBoat { background: #ff9800 !important; }
+    .barco { margin: 20px auto; background: #444; padding: 10px; border-radius: 10px; width: 90%; }
+    .log, #regras { background: #1a1a1a; margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 0.95rem; }
+    button { margin: 15px 10px 0; padding: 12px 25px; font-size: 1rem; background-color: #9c27b0; color: white; border: none; border-radius: 8px; cursor: pointer; }
+    button:hover { background-color: #ab47bc; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>🧠 Desafio: Cientistas, Mutantes e o Barco Nuclear</h2>
+
+    <div id="regras">
+      <h3>📜 Regras do Desafio:</h3>
+      <ul>
+        <li>🔹 O barco comporta no máximo 2 pessoas.</li>
+        <li>🔹 O barco nunca pode navegar vazio.</li>
+        <li>🔹 Somente Mutantes e o Segurança podem pilotar o barco.</li>
+        <li>🔹 Cientistas não pilotam o barco.</li>
+        <li>🔹 Se Mutantes forem maioria em qualquer lado sem o Segurança, atacam!</li>
+        <li>✅ Leve todos para o lado direito sem violar as regras.</li>
+      </ul>
+    </div>
+
+    <div class="lado">
+      <div class="bloco">
+        <h3>Base Instável</h3>
+        <div id="leftCharacters"></div>
+      </div>
+      <div class="bloco">
+        <h3>Zona Segura</h3>
+        <div id="rightCharacters"></div>
+      </div>
+    </div>
+
+    <div class="barco">
+      <h3>🛶 Barco</h3>
+      <div id="boat"></div>
+      <button onclick="moveBoat()">⛵ Levar</button>
+      <button onclick="reiniciarJogo()">🔄 Reiniciar</button>
+    </div>
+
+    <div class="log" id="log">Selecione personagens e use o barco para atravessar o rio.</div>
+  </main>
+
+  <script>
+    const initialCharacters = [
+      { name: "Cientista 1", type: "cientista", location: "left" },
+      { name: "Cientista 2", type: "cientista", location: "left" },
+      { name: "Cientista 3", type: "cientista", location: "left" },
+      { name: "Mutante 1", type: "mutante", location: "left" },
+      { name: "Mutante 2", type: "mutante", location: "left" },
+      { name: "Mutante 3", type: "mutante", location: "left" },
+      { name: "Segurança", type: "seguranca", location: "left" },
+    ];
+
+    let characters, boat, boatSide;
+
+    function reiniciarJogo() {
+      characters = [...initialCharacters.map(c => ({ ...c }))];
+      boat = [];
+      boatSide = "left";
+      render();
+    }
+
+    function render() {
+      const left = document.getElementById("leftCharacters");
+      const right = document.getElementById("rightCharacters");
+      const boatDiv = document.getElementById("boat");
+      left.innerHTML = "";
+      right.innerHTML = "";
+      boatDiv.innerHTML = "";
+
+      characters.forEach((char, index) => {
+        const div = document.createElement("div");
+        div.className = "personagem";
+        if (boat.includes(index)) div.classList.add("inBoat");
+        div.textContent = char.name;
+        div.onclick = () => toggleBoat(index);
+
+        if (boat.includes(index)) {
+          boatDiv.appendChild(div);
+        } else if (char.location === "left") {
+          left.appendChild(div);
+        } else {
+          right.appendChild(div);
+        }
+      });
+
+      checkStatus();
+    }
+
+    function toggleBoat(index) {
+      const char = characters[index];
+      if (char.location !== boatSide && !boat.includes(index)) return;
+
+      if (boat.includes(index)) {
+        boat = boat.filter(i => i !== index);
+      } else {
+        if (boat.length >= 2) return;
+        boat.push(index);
+      }
+      render();
+    }
+
+    function moveBoat() {
+      if (boat.length === 0) return log("❌ O barco não pode ir vazio.");
+
+      const pilotos = boat.filter(i =>
+        ["seguranca", "mutante"].includes(characters[i].type)
+      );
+      if (pilotos.length === 0) return log("❌ Ninguém no barco sabe pilotar.");
+
+      boat.forEach(i => {
+        characters[i].location = boatSide === "left" ? "right" : "left";
+      });
+      boatSide = boatSide === "left" ? "right" : "left";
+      boat = [];
+      render();
+    }
+
+    function checkStatus() {
+      const leftSide = characters.filter(c => c.location === "left");
+      const rightSide = characters.filter(c => c.location === "right");
+
+      const checkAttack = (side) => {
+        const m = side.filter(c => c.type === "mutante").length;
+        const c = side.filter(c => c.type === "cientista").length;
+        const s = side.find(c => c.type === "seguranca");
+        return m > c && c > 0 && !s;
+      };
+
+      if (checkAttack(leftSide) || checkAttack(rightSide)) {
+        log("💥 Os mutantes atacaram. Missão falhou.");
+        disableGame();
+        return;
+      }
+
+      if (characters.every(c => c.location === "right")) {
+        log("✅ Operação concluída. A humanidade está a salvo… por enquanto.");
+        disableGame();
+      } else {
+        log("⏳ Continue com cuidado...");
+      }
+    }
+
+    function disableGame() {
+      document.querySelectorAll(".personagem").forEach(el => {
+        el.onclick = null;
+      });
+    }
+
+    function log(msg) {
+      document.getElementById("log").textContent = msg;
+    }
+
+    reiniciarJogo();
+  </script>
+</body>
+</html>

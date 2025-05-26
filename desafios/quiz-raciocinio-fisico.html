@@ -1,0 +1,150 @@
+<!-- desafios/quiz-raciocinio-fisico.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Raciocínio Físico</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .quiz-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+    .pergunta {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .alternativas button {
+      display: block;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .resultado {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .acertou { color: lime; }
+    .errou { color: red; }
+    #proxima-btn {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="quiz-box">
+      <div class="pergunta" id="pergunta"></div>
+      <div class="alternativas" id="alternativas"></div>
+      <div class="resultado" id="resultado"></div>
+      <button id="proxima-btn" onclick="proximaPergunta()">Próxima Pergunta</button>
+      <button onclick="reiniciarQuiz()">🔄 Reiniciar Quiz</button>
+    </div>
+  </main>
+
+  <script>
+    const perguntas = [
+      { pergunta: "Qual é a unidade de medida da força no Sistema Internacional?", opcoes: ["Newton", "Joule", "Watt", "Pascal"], resposta: "Newton" },
+      { pergunta: "O que acontece com um corpo em queda livre, desconsiderando a resistência do ar?", opcoes: ["Acelera constantemente", "Mantém velocidade constante", "Desacelera", "Fica em repouso"], resposta: "Acelera constantemente" },
+      { pergunta: "Qual grandeza física relaciona massa e aceleração?", opcoes: ["Força", "Velocidade", "Energia", "Potência"], resposta: "Força" },
+      { pergunta: "O que é energia cinética?", opcoes: ["Energia do movimento", "Energia elétrica", "Energia potencial", "Energia térmica"], resposta: "Energia do movimento" },
+      { pergunta: "Qual é a unidade de trabalho no SI?", opcoes: ["Joule", "Newton", "Watt", "Ampere"], resposta: "Joule" },
+      { pergunta: "Quando a velocidade de um corpo é constante, sua aceleração é:", opcoes: ["Zero", "Constante", "Negativa", "Infinita"], resposta: "Zero" },
+      { pergunta: "Qual grandeza mede a dificuldade de um corpo mudar seu estado de movimento?", opcoes: ["Inércia", "Força", "Peso", "Aceleração"], resposta: "Inércia" },
+      { pergunta: "O que é pressão?", opcoes: ["Força por área", "Peso por volume", "Energia por tempo", "Velocidade por tempo"], resposta: "Força por área" },
+      { pergunta: "Qual é a unidade de potência no SI?", opcoes: ["Watt", "Joule", "Newton", "Pascal"], resposta: "Watt" },
+      { pergunta: "O que acontece com a energia mecânica em um sistema sem atrito?", opcoes: ["Conserva-se", "Diminui", "Aumenta", "Desaparece"], resposta: "Conserva-se" },
+      { pergunta: "O que é energia potencial gravitacional?", opcoes: ["Energia de altura", "Energia elétrica", "Energia de calor", "Energia do movimento"], resposta: "Energia de altura" },
+      { pergunta: "Qual é a terceira Lei de Newton?", opcoes: ["A toda ação corresponde uma reação", "F=ma", "Inércia", "Trabalho e energia"], resposta: "A toda ação corresponde uma reação" },
+      { pergunta: "O que define o impulso de uma força?", opcoes: ["Produto da força pelo tempo de atuação", "Velocidade pelo tempo", "Aceleração pela massa", "Potência pelo tempo"], resposta: "Produto da força pelo tempo de atuação" },
+      { pergunta: "Qual é a velocidade da luz no vácuo?", opcoes: ["300.000 km/s", "150.000 km/s", "3.000 km/s", "30.000 km/s"], resposta: "300.000 km/s" },
+      { pergunta: "Qual partícula tem carga negativa?", opcoes: ["Elétron", "Prôton", "Nêitreon", "Fóton"], resposta: "Elétron" },
+      { pergunta: "O que é corrente elétrica?", opcoes: ["Fluxo de elétrons", "Força de tensão", "Resistência", "Energia"], resposta: "Fluxo de elétrons" },
+      { pergunta: "Qual instrumento mede a tensão elétrica?", opcoes: ["Voltímetro", "Amperímetro", "Ohmímetro", "Termômetro"], resposta: "Voltímetro" },
+      { pergunta: "O que é refração da luz?", opcoes: ["Mudança de direção ao mudar de meio", "Reflexo da luz", "Absorção de energia", "Espalhamento"], resposta: "Mudança de direção ao mudar de meio" },
+      { pergunta: "Qual é a unidade de resistência elétrica?", opcoes: ["Ohm", "Volt", "Ampere", "Joule"], resposta: "Ohm" },
+      { pergunta: "O que acontece quando dois corpos colidem elasticamente?", opcoes: ["Conservam energia e quantidade de movimento", "Perdem energia cinética", "Trocam massa", "Param imediatamente"], resposta: "Conservam energia e quantidade de movimento" },
+      { pergunta: "Qual grandeza é dada por v = d/t?", opcoes: ["Velocidade", "Aceleração", "Força", "Impulso"], resposta: "Velocidade" },
+      { pergunta: "Qual transformação gasosa ocorre a temperatura constante?", opcoes: ["Isotérmica", "Isobárica", "Isovolumétrica", "Adiabática"], resposta: "Isotérmica" },
+      { pergunta: "O que mede um termômetro?", opcoes: ["Temperatura", "Pressão", "Calor", "Energia"], resposta: "Temperatura" },
+      { pergunta: "O que é um corpo em equilíbrio estático?", opcoes: ["Não se move e não tende a se mover", "Move-se com velocidade constante", "Acelera para frente", "Gira em torno do eixo"], resposta: "Não se move e não tende a se mover" },
+      { pergunta: "Qual é a fórmula da energia potencial gravitacional?", opcoes: ["Ep = m.g.h", "Ep = m.v", "Ep = m.a.t", "Ep = m/h"], resposta: "Ep = m.g.h" }
+    ];
+
+    let embaralhadas = [];
+    let indice = 0;
+    let acertos = 0;
+
+    function embaralharPerguntas() {
+      embaralhadas = [...perguntas].sort(() => 0.5 - Math.random());
+      indice = 0;
+      acertos = 0;
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      document.getElementById("resultado").innerText = "";
+      document.getElementById("proxima-btn").style.display = "none";
+      const atual = embaralhadas[indice];
+      document.getElementById("pergunta").innerText = atual.pergunta;
+      const alt = document.getElementById("alternativas");
+      alt.innerHTML = "";
+      atual.opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.innerText = opcao;
+        btn.onclick = () => verificarResposta(btn, opcao);
+        alt.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(botaoClicado, escolha) {
+      const correta = embaralhadas[indice].resposta;
+      const res = document.getElementById("resultado");
+      const botoes = document.querySelectorAll(".alternativas button");
+      botoes.forEach(btn => btn.disabled = true);
+
+      if (escolha === correta) {
+        res.innerHTML = '<span class="acertou">✅ Correto!</span>';
+        acertos++;
+      } else {
+        res.innerHTML = `<span class="errou">❌ Errado. A resposta certa era: ${correta}`;
+      }
+
+      document.getElementById("proxima-btn").style.display = "inline-block";
+    }
+
+    function proximaPergunta() {
+      indice++;
+      if (indice < embaralhadas.length) {
+        mostrarPergunta();
+      } else {
+        document.getElementById("pergunta").innerText = `Fim do Quiz! Você acertou ${acertos} de ${embaralhadas.length}.`;
+        document.getElementById("alternativas").innerHTML = "";
+        document.getElementById("proxima-btn").style.display = "none";
+      }
+    }
+
+    function reiniciarQuiz() {
+      embaralharPerguntas();
+      document.getElementById("resultado").innerText = "";
+    }
+
+    embaralharPerguntas();
+  </script>
+</body>
+</html>

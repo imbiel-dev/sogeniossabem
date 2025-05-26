@@ -1,0 +1,135 @@
+<!-- desafios/desafio-da-ponte.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Desafio da Ponte</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .lado {
+      border: 2px solid var(--roxo);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px;
+    }
+    .pessoas span {
+      display: inline-block;
+      background: var(--roxo);
+      color: white;
+      padding: 5px 10px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #controle button {
+      margin: 5px;
+    }
+    #tempo {
+      font-size: 1.2rem;
+      color: var(--roxo);
+      font-weight: bold;
+    }
+    .vitoria {
+      color: lime;
+      font-weight: bold;
+    }
+    .falha {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Desafio da Ponte 🌉</h2>
+    <p>Quatro pessoas precisam atravessar uma ponte à noite. Apenas duas pessoas podem cruzar por vez e com a lanterna. Quando duas atravessam juntas, vão no ritmo do mais lento. Alguém sempre precisa trazer a lanterna de volta. Todos devem atravessar em no máximo 17 minutos.</p>
+
+    <div id="tempo">Tempo: 0 min</div>
+
+    <div style="display: flex; justify-content: space-around;">
+      <div class="lado" id="esquerda">
+        <h3>Lado Esquerdo</h3>
+        <div class="pessoas" id="lado-esquerdo"></div>
+      </div>
+      <div class="lado" id="direita">
+        <h3>Lado Direito</h3>
+        <div class="pessoas" id="lado-direito"></div>
+      </div>
+    </div>
+
+    <div id="controle">
+      <h3>Ações:</h3>
+      <button onclick="atravessar('A','B')">Atravessar A + B</button>
+      <button onclick="atravessar('A','C')">Atravessar A + C</button>
+      <button onclick="atravessar('A','D')">Atravessar A + D</button>
+      <button onclick="atravessar('B','C')">Atravessar B + C</button>
+      <button onclick="atravessar('B','D')">Atravessar B + D</button>
+      <button onclick="atravessar('C','D')">Atravessar C + D</button>
+      <button onclick="voltar('A')">Voltar A</button>
+      <button onclick="voltar('B')">Voltar B</button>
+      <button onclick="voltar('C')">Voltar C</button>
+      <button onclick="voltar('D')">Voltar D</button>
+      <button onclick="resetar()">🔄 Reiniciar</button>
+    </div>
+
+    <p id="resultado"></p>
+  </main>
+
+  <script>
+    const tempos = { A: 1, B: 2, C: 5, D: 10 };
+    let ladoEsquerdo = ['A','B','C','D'];
+    let ladoDireito = [];
+    let tempo = 0;
+
+    function atualizar() {
+      document.getElementById('lado-esquerdo').innerHTML = ladoEsquerdo.map(p => `<span>${p}</span>`).join(' ');
+      document.getElementById('lado-direito').innerHTML = ladoDireito.map(p => `<span>${p}</span>`).join(' ');
+      document.getElementById('tempo').innerText = `Tempo: ${tempo} min`;
+
+      if (ladoDireito.length === 4) {
+        document.getElementById('resultado').innerHTML = tempo <= 17
+          ? '<p class="vitoria">🎉 Você conseguiu atravessar todos em 17 minutos!</p>'
+          : '<p class="falha">⏱️ Todos atravessaram, mas ultrapassaram 17 minutos.</p>';
+      }
+    }
+
+    function atravessar(p1, p2) {
+      if (!ladoEsquerdo.includes(p1) || !ladoEsquerdo.includes(p2)) return alert("Ambos devem estar no lado esquerdo.");
+      ladoEsquerdo = ladoEsquerdo.filter(p => p !== p1 && p !== p2);
+      ladoDireito.push(p1, p2);
+      tempo += Math.max(tempos[p1], tempos[p2]);
+      atualizar();
+    }
+
+    function voltar(p) {
+      if (!ladoDireito.includes(p)) return alert("Essa pessoa não está do lado direito.");
+      ladoDireito = ladoDireito.filter(x => x !== p);
+      ladoEsquerdo.push(p);
+      tempo += tempos[p];
+      atualizar();
+    }
+
+    function resetar() {
+      ladoEsquerdo = ['A','B','C','D'];
+      ladoDireito = [];
+      tempo = 0;
+      document.getElementById('resultado').innerText = '';
+      atualizar();
+    }
+
+    atualizar();
+  </script>
+</body>
+</html>

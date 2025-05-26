@@ -1,0 +1,155 @@
+<!-- desafios/quiz-logica-raciocinio.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Lógica & Raciocínio</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .quiz-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+    .pergunta {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .alternativas button {
+      display: block;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .resultado {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .acertou { color: lime; }
+    .errou { color: red; }
+    #proxima-btn {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div class="quiz-box">
+      <div class="pergunta" id="pergunta"></div>
+      <div class="alternativas" id="alternativas"></div>
+      <div class="resultado" id="resultado"></div>
+      <button id="proxima-btn" onclick="proximaPergunta()">Próxima Pergunta</button>
+      <button onclick="reiniciarQuiz()">🔄 Reiniciar Quiz</button>
+    </div>
+  </main>
+
+  <script>
+    const perguntas = [
+      // Sequências Numéricas
+      { pergunta: "1, 2, 4, 8, 16, ?", opcoes: ["24", "30", "32", "20"], resposta: "32" },
+      { pergunta: "5, 10, 20, 40, ?", opcoes: ["60", "80", "100", "70"], resposta: "80" },
+      { pergunta: "2, 3, 5, 7, 11, ?", opcoes: ["12", "13", "14", "15"], resposta: "13" },
+      { pergunta: "21, 18, 15, 12, ?", opcoes: ["10", "6", "9", "3"], resposta: "9" },
+      { pergunta: "100, 90, 81, 73, ?", opcoes: ["66", "64", "65", "62"], resposta: "66" },
+      { pergunta: "3, 6, 9, 12, ?", opcoes: ["15", "18", "21", "16"], resposta: "15" },
+
+      // Padrões Ocultos
+      { pergunta: "AB, CD, EF, ?", opcoes: ["GH", "HJ", "GI", "IJ"], resposta: "GH" },
+      { pergunta: "1A, 2B, 3C, ?", opcoes: ["4D", "4E", "5D", "3D"], resposta: "4D" },
+      { pergunta: "Z, X, V, T, ?", opcoes: ["S", "R", "Q", "P"], resposta: "R" },
+      { pergunta: "AZ, BY, CX, ?", opcoes: ["DU", "DV", "DW", "DZ"], resposta: "DW" },
+      { pergunta: "2, 4, 3, 6, 5, 10, ?", opcoes: ["7", "8", "9", "11"], resposta: "7" },
+      { pergunta: "AA, BB, CC, DD, ?", opcoes: ["EE", "EF", "FE", "FF"], resposta: "EE" },
+
+      // Verdadeiro ou Falso lógico
+      { pergunta: "Todo cachorro é mamífero. Rex é um cachorro. Logo: Rex é um mamífero.", opcoes: ["Verdadeiro", "Falso", "Depende", "Impossível saber"], resposta: "Verdadeiro" },
+      { pergunta: "Se 2 + 2 = 5, então 4 + 4 = 10.", opcoes: ["Verdadeiro", "Falso", "Depende", "Paradoxo"], resposta: "Verdadeiro" },
+      { pergunta: "Se A > B e B > C, então A > C.", opcoes: ["Falso", "Verdadeiro", "Depende", "Impossível saber"], resposta: "Verdadeiro" },
+      { pergunta: "Se todos são felizes, então ninguém está triste.", opcoes: ["Falso", "Depende", "Verdadeiro", "Parcialmente verdadeiro"], resposta: "Verdadeiro" },
+      { pergunta: "Maria é mais alta que João. João é mais baixo que Ana. Quem é mais alto?", opcoes: ["João", "Maria", "Ana", "Não dá pra saber"], resposta: "Maria" },
+      { pergunta: "Se um número é par, ele é divisível por 2.", opcoes: ["Falso", "Verdadeiro", "Apenas múltiplos de 2", "Às vezes"], resposta: "Verdadeiro" },
+      { pergunta: "Negação de 'Todos os peixes nadam':", opcoes: ["Nenhum peixe nada", "Algum peixe não nada", "Todos os peixes não nadam", "Todos nadam bem"], resposta: "Algum peixe não nada" },
+
+      // Adivinhações com pistas
+      { pergunta: "Tenho 3 lados e nenhum ângulo reto. Quem sou eu?", opcoes: ["Quadrado", "Triângulo", "Trapézio", "Retângulo"], resposta: "Triângulo" },
+      { pergunta: "Sou maior que um carro, mas passo por um fio. Quem sou?", opcoes: ["Água", "Eletricidade", "Luz", "Som"], resposta: "Eletricidade" },
+      { pergunta: "Quanto mais tiro, mais eu cresço. Quem sou?", opcoes: ["Foto", "Buraco", "Espaço", "Sombra"], resposta: "Buraco" },
+      { pergunta: "Tenho números, mas não sou calculadora. Quem sou?", opcoes: ["Telefone", "Relógio", "Livro", "Celular"], resposta: "Relógio" },
+      { pergunta: "Sou invisível, mas te empurro. Quem sou?", opcoes: ["Força", "Vento", "Energia", "Pressão"], resposta: "Vento" },
+      { pergunta: "Sou cheio de buracos, mas ainda seguro água. Quem sou?", opcoes: ["Esponja", "Peneira", "Balde", "Garrafa"], resposta: "Esponja" }
+    ];
+
+    let embaralhadas = [];
+    let indice = 0;
+    let acertos = 0;
+
+    function embaralharPerguntas() {
+      embaralhadas = [...perguntas].sort(() => 0.5 - Math.random());
+      indice = 0;
+      acertos = 0;
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      document.getElementById("resultado").innerText = "";
+      document.getElementById("proxima-btn").style.display = "none";
+      const atual = embaralhadas[indice];
+      document.getElementById("pergunta").innerText = atual.pergunta;
+      const alt = document.getElementById("alternativas");
+      alt.innerHTML = "";
+      atual.opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.innerText = opcao;
+        btn.onclick = () => verificarResposta(btn, opcao);
+        alt.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(botaoClicado, escolha) {
+      const correta = embaralhadas[indice].resposta;
+      const res = document.getElementById("resultado");
+      const botoes = document.querySelectorAll(".alternativas button");
+      botoes.forEach(btn => btn.disabled = true);
+
+      if (escolha === correta) {
+        res.innerHTML = '<span class="acertou">✅ Correto!</span>';
+        acertos++;
+        document.getElementById("proxima-btn").style.display = "inline-block";
+      } else {
+        res.innerHTML = `<span class="errou">❌ Errado. A resposta certa era: ${correta}`;
+      }
+    }
+
+    function proximaPergunta() {
+      indice++;
+      if (indice < embaralhadas.length) {
+        mostrarPergunta();
+      } else {
+        document.getElementById("pergunta").innerText = `Fim do Quiz! Você acertou ${acertos} de ${embaralhadas.length}.`;
+        document.getElementById("alternativas").innerHTML = "";
+        document.getElementById("proxima-btn").style.display = "none";
+      }
+    }
+
+    function reiniciarQuiz() {
+      embaralharPerguntas();
+      document.getElementById("resultado").innerText = "";
+    }
+
+    embaralharPerguntas();
+  </script>
+</body>
+</html>

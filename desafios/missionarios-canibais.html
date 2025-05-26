@@ -1,0 +1,153 @@
+<!-- desafios/missionarios-canibais.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Missionários e Canibais</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .lado {
+      border: 2px solid var(--roxo);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px;
+      min-width: 220px;
+    }
+    .figuras span {
+      display: inline-block;
+      background: var(--roxo);
+      color: white;
+      padding: 5px 10px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .rio {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+    #controle button {
+      margin: 5px;
+    }
+    #estado {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .vitoria {
+      color: lime;
+    }
+    .falha {
+      color: red;
+    }
+    #reiniciar-btn {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <h2>Desafio dos Missionários e Canibais ⛵</h2>
+    <p>Três missionários e três canibais precisam atravessar um rio com um barco que carrega até duas pessoas. Em nenhum lado do rio os canibais podem ser mais numerosos que os missionários, ou eles os devoram!</p>
+
+    <div class="rio">
+      <div class="lado" id="esquerda">
+        <h3>Lado Esquerdo</h3>
+        <div class="figuras" id="lado-esquerdo"></div>
+      </div>
+      <div class="lado" id="direita">
+        <h3>Lado Direito</h3>
+        <div class="figuras" id="lado-direito"></div>
+      </div>
+    </div>
+
+    <div id="controle">
+      <h3>Ações:</h3>
+      <button onclick="viajar('M','M')">Levar 2 Missionários</button>
+      <button onclick="viajar('C','C')">Levar 2 Canibais</button>
+      <button onclick="viajar('M','C')">Levar 1 Missionário + 1 Canibal</button>
+      <button onclick="viajar('M')">Levar 1 Missionário</button>
+      <button onclick="viajar('C')">Levar 1 Canibal</button>
+    </div>
+
+    <button id="reiniciar-btn" onclick="resetar()">🔄 Reiniciar</button>
+
+    <p id="estado"></p>
+  </main>
+
+  <script>
+    let ladoE = ['M','M','M','C','C','C'];
+    let ladoD = [];
+    let barcoEsquerda = true;
+
+    function atualizarTela() {
+      document.getElementById('lado-esquerdo').innerHTML = ladoE.map(p => `<span>${p}</span>`).join(' ');
+      document.getElementById('lado-direito').innerHTML = ladoD.map(p => `<span>${p}</span>`).join(' ');
+
+      if (ladoD.length === 6) {
+        document.getElementById('estado').innerHTML = '<span class="vitoria">🎉 Todos atravessaram com sucesso!</span>';
+        document.getElementById('reiniciar-btn').style.display = 'block';
+      }
+    }
+
+    function viajar(p1, p2 = null) {
+      let origem = barcoEsquerda ? ladoE : ladoD;
+      let destino = barcoEsquerda ? ladoD : ladoE;
+
+      if (!origem.includes(p1)) return alert(`${p1} não está no lado atual.`);
+      if (p2 && !origem.includes(p2)) return alert(`${p2} não está no lado atual.`);
+
+      origem.splice(origem.indexOf(p1), 1);
+      destino.push(p1);
+
+      if (p2) {
+        origem.splice(origem.indexOf(p2), 1);
+        destino.push(p2);
+      }
+
+      barcoEsquerda = !barcoEsquerda;
+      if (!verificarSeguranca()) {
+        document.getElementById('estado').innerHTML = '<span class="falha">💀 Os missionários foram devorados! Tente novamente.</span>';
+        document.getElementById('controle').style.display = 'none';
+        document.getElementById('reiniciar-btn').style.display = 'block';
+        return;
+      }
+
+      atualizarTela();
+    }
+
+    function verificarSeguranca() {
+      const contar = (arr, tipo) => arr.filter(x => x === tipo).length;
+      let [mE, cE] = [contar(ladoE, 'M'), contar(ladoE, 'C')];
+      let [mD, cD] = [contar(ladoD, 'M'), contar(ladoD, 'C')];
+
+      if ((mE > 0 && cE > mE) || (mD > 0 && cD > mD)) return false;
+      return true;
+    }
+
+    function resetar() {
+      ladoE = ['M','M','M','C','C','C'];
+      ladoD = [];
+      barcoEsquerda = true;
+      document.getElementById('estado').innerText = '';
+      document.getElementById('controle').style.display = 'block';
+      document.getElementById('reiniciar-btn').style.display = 'none';
+      atualizarTela();
+    }
+
+    atualizarTela();
+  </script>
+</body>
+</html>

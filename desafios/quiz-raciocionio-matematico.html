@@ -1,0 +1,150 @@
+<!-- desafios/quiz-raciocinio-matematico.html -->
+<!DOCTYPE html>
+<html lang="pt-Bt">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz: Raciocínio Matemático</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .quiz-box {
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+    .pergunta {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+    .alternativas button {
+      display: block;
+      margin: 8px 0;
+      width: 100%;
+    }
+    .resultado {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .acertou { color: lime; }
+    .errou { color: red; }
+    #proxima-btn {
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Só os Gênios Sabem</h1>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Início</a></li>
+        <li><a href="../desafios.html">Desafios</a></li>
+        <li><a href="../ebook.html">eBook</a></li>
+        <li><a href="../clube.html">Clube dos Gênios</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="quiz-box">
+      <div class="pergunta" id="pergunta"></div>
+      <div class="alternativas" id="alternativas"></div>
+      <div class="resultado" id="resultado"></div>
+      <button id="proxima-btn" onclick="proximaPergunta()">Próxima Pergunta</button>
+      <button onclick="reiniciarQuiz()">🔄 Reiniciar Quiz</button>
+    </div>
+  </main>
+
+  <script>
+    const perguntas = [
+      { pergunta: "Qual é o próximo número da sequência: 2, 4, 8, 16, ?", opcoes: ["24", "32", "30", "28"], resposta: "32" },
+      { pergunta: "Quantos trios distintos podem ser formados com 5 pessoas?", opcoes: ["10", "5", "20", "15"], resposta: "10" },
+      { pergunta: "Se 3x + 2 = 17, quanto vale x?", opcoes: ["5", "6", "4", "3"], resposta: "5" },
+      { pergunta: "Qual é a raiz quadrada de 144?", opcoes: ["12", "11", "13", "14"], resposta: "12" },
+      { pergunta: "Se um número é triplicado e somado a 4 resulta em 19, qual o número?", opcoes: ["3", "4", "5", "6"], resposta: "5" },
+      { pergunta: "Quanto é 15% de 80?", opcoes: ["10", "12", "14", "16"], resposta: "12" },
+      { pergunta: "Qual número completa: 1, 1, 2, 3, 5, ?", opcoes: ["7", "8", "6", "9"], resposta: "8" },
+      { pergunta: "Se x + y = 10 e x - y = 2, quanto é x?", opcoes: ["4", "6", "8", "5"], resposta: "6" },
+      { pergunta: "Quanto é (2^3) * (3^2)?", opcoes: ["72", "36", "48", "64"], resposta: "72" },
+      { pergunta: "Qual é a média aritmética de 4, 6, 8 e 10?", opcoes: ["7", "6", "8", "9"], resposta: "7" },
+      { pergunta: "Se 4x = 2x + 12, então x = ?", opcoes: ["6", "4", "12", "8"], resposta: "6" },
+      { pergunta: "Quantos segundos há em 2 horas?", opcoes: ["7200", "3600", "1800", "12000"], resposta: "7200" },
+      { pergunta: "Quanto é 7! (fatorial de 7)?", opcoes: ["5040", "720", "840", "40320"], resposta: "5040" },
+      { pergunta: "Se um triângulo tem lados 3, 4 e 5, ele é...?", opcoes: ["Isósceles", "Equilátero", "Retângulo", "Obtusângulo"], resposta: "Retângulo" },
+      { pergunta: "O que é um número primo?", opcoes: ["Divisível apenas por 1 e ele mesmo", "Divisível por 2", "Multiplo de 5", "Divisível por todos os números"], resposta: "Divisível apenas por 1 e ele mesmo" },
+      { pergunta: "Qual é o quadrado de 13?", opcoes: ["169", "144", "156", "121"], resposta: "169" },
+      { pergunta: "Quantos lados tem um dodecágono?", opcoes: ["12", "10", "8", "14"], resposta: "12" },
+      { pergunta: "Se um carro faz 12 km por litro, quantos litros ele precisa para 96 km?", opcoes: ["8", "10", "6", "12"], resposta: "8" },
+      { pergunta: "Qual número falta: 100, 90, 81, 73, ?", opcoes: ["66", "65", "64", "70"], resposta: "66" },
+      { pergunta: "Qual é o valor de pi (π) aproximado?", opcoes: ["3,14", "2,71", "1,41", "3,33"], resposta: "3,14" },
+      { pergunta: "Quanto é 2/3 de 90?", opcoes: ["60", "30", "45", "75"], resposta: "60" },
+      { pergunta: "Qual é o valor de 3² + 4²?", opcoes: ["25", "9", "16", "30"], resposta: "25" },
+      { pergunta: "Se o perímetro de um quadrado é 40 cm, qual é o lado?", opcoes: ["10", "8", "12", "15"], resposta: "10" },
+      { pergunta: "Quantos zeros tem um milhão?", opcoes: ["6", "5", "7", "8"], resposta: "6" },
+      { pergunta: "Qual número é o resultado de (10^2) - (6^2)?", opcoes: ["64", "36", "28", "56"], resposta: "64" }
+    ];
+
+    let embaralhadas = [];
+    let indice = 0;
+    let acertos = 0;
+
+    function embaralharPerguntas() {
+      embaralhadas = [...perguntas].sort(() => 0.5 - Math.random());
+      indice = 0;
+      acertos = 0;
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      document.getElementById("resultado").innerText = "";
+      document.getElementById("proxima-btn").style.display = "none";
+      const atual = embaralhadas[indice];
+      document.getElementById("pergunta").innerText = atual.pergunta;
+      const alt = document.getElementById("alternativas");
+      alt.innerHTML = "";
+      atual.opcoes.sort(() => 0.5 - Math.random()).forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.innerText = opcao;
+        btn.onclick = () => verificarResposta(btn, opcao);
+        alt.appendChild(btn);
+      });
+    }
+
+    function verificarResposta(botaoClicado, escolha) {
+      const correta = embaralhadas[indice].resposta;
+      const res = document.getElementById("resultado");
+      const botoes = document.querySelectorAll(".alternativas button");
+      botoes.forEach(btn => btn.disabled = true);
+
+      if (escolha === correta) {
+        res.innerHTML = '<span class="acertou">✅ Correto!</span>';
+        acertos++;
+      } else {
+        res.innerHTML = `<span class="errou">❌ Errado. A resposta certa era: ${correta}`;
+      }
+
+      document.getElementById("proxima-btn").style.display = "inline-block";
+    }
+
+    function proximaPergunta() {
+      indice++;
+      if (indice < embaralhadas.length) {
+        mostrarPergunta();
+      } else {
+        document.getElementById("pergunta").innerText = `Fim do Quiz! Você acertou ${acertos} de ${embaralhadas.length}.`;
+        document.getElementById("alternativas").innerHTML = "";
+        document.getElementById("proxima-btn").style.display = "none";
+      }
+    }
+
+    function reiniciarQuiz() {
+      embaralharPerguntas();
+      document.getElementById("resultado").innerText = "";
+    }
+
+    embaralharPerguntas();
+  </script>
+</body>
+</html>
