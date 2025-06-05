@@ -57,17 +57,60 @@
         box-shadow: 0 0 20px #00ff88;
       }
     }
+
+    @media (max-width: 768px) {
+  table {
+    font-size: 0.8rem;
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+
+  select {
+    font-size: 0.9rem;
+    padding: 4px;
+  }
+
+  .dicas {
+    font-size: 0.9rem;
+    padding: 15px;
+  }
+
+  .dicas ol {
+    padding-left: 15px;
+  }
+
+  button {
+    width: 90%;
+    font-size: 1rem;
+    padding: 12px;
+    margin: 20px auto;
+    display: block;
+    border-radius: 10px;
+  }
+
+  #resultado {
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+}
+
   </style>
+  
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+<link rel="icon" href="img/favicon.png" type="image/png">
 </head>
 <body>
   <header>
-    <h1>Só os Gênios Sabem</h1>
+    <h1>🧠 Só os Gênios Sabem</h1>
     <nav>
       <ul>
         <li><a href="../index.html">Início</a></li>
         <li><a href="../desafios.html">Desafios</a></li>
         <li><a href="../ebook.html">eBook</a></li>
         <li><a href="../clube.html">Clube dos Gênios</a></li>
+        <li><a href="../artigos.html">Artigos</a></li>
       </ul>
     </nav>
   </header>
@@ -192,13 +235,21 @@
       const resultado = document.getElementById("resultado");
       const tds = document.querySelectorAll("td");
       if (correto) {
-        resultado.innerText = "🎉 Você é um gênio! Parabéns por resolver o Desafio de Einstein!";
+        resultado.innerHTML = "<span class='acerto'>🎉 Você é um gênio! Parabéns por resolver o Desafio de Einstein!</span>";
         tds.forEach(td => td.classList.add("acerto"));
       } else {
         resultado.innerText = "Ainda não! Revise suas escolhas e tente novamente.";
         tds.forEach(td => td.classList.remove("acerto"));
       }
     }
+    window.onload = () => {
+      categorias.forEach((categoria, linha) => {
+        for (let col = 0; col < 5; col++) {
+          const seletor = document.getElementsByName(`${categoria}-${col}`)[0];
+          seletor.selectedIndex = 0;
+        }
+      });
+    };
   </script>
 </body>
 </html>

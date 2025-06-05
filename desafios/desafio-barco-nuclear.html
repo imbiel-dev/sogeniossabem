@@ -23,17 +23,68 @@
     .log, #regras { background: #1a1a1a; margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 0.95rem; }
     button { margin: 15px 10px 0; padding: 12px 25px; font-size: 1rem; background-color: #9c27b0; color: white; border: none; border-radius: 8px; cursor: pointer; }
     button:hover { background-color: #ab47bc; }
+
+    @media (max-width: 768px) {
+  main {
+    padding: 20px 10px;
+  }
+
+  .lado {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .bloco {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .personagem {
+    font-size: 1.1rem;
+    padding: 12px;
+    margin: 8px 0;
+  }
+
+  .barco {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  button {
+    width: 100%;
+    max-width: 300px;
+    margin: 12px auto;
+    display: block;
+    font-size: 1.05rem;
+  }
+
+  .log, #regras {
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  #regras ul {
+    padding-left: 20px;
+    text-align: left;
+  }
+}
+
   </style>
+  
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+<link rel="icon" href="img/favicon.png" type="image/png">
 </head>
 <body>
   <header>
-    <h1>Só os Gênios Sabem</h1>
+    <h1>🧠 Só os Gênios Sabem</h1>
     <nav>
       <ul>
         <li><a href="../index.html">Início</a></li>
         <li><a href="../desafios.html">Desafios</a></li>
         <li><a href="../ebook.html">eBook</a></li>
         <li><a href="../clube.html">Clube dos Gênios</a></li>
+        <li><a href="../artigos.html">Artigos</a></li>
       </ul>
     </nav>
   </header>

@@ -89,17 +89,77 @@
     .btn-group {
       margin-top: 15px;
     }
+
+    @media (max-width: 768px) {
+  main {
+    padding: 20px 10px;
+  }
+
+  #perguntas {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #perguntas button {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1rem;
+    text-align: left;
+    padding: 12px;
+  }
+
+  input[type=number] {
+    width: 50px;
+    font-size: 1.1rem;
+    margin: 5px;
+    padding: 8px;
+  }
+
+  .btn-group button {
+    width: 100%;
+    max-width: 300px;
+    margin: 8px auto;
+    font-size: 1.05rem;
+    display: block;
+  }
+
+  #respostas {
+    max-height: 300px;
+    font-size: 0.95rem;
+    padding: 12px;
+  }
+
+  #resultado {
+    font-size: 1.2rem;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+}
+
   </style>
+  
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+<link rel="icon" href="img/favicon.png" type="image/png">
 </head>
+
 <body>
   <header>
-    <h1>Só os Gênios Sabem</h1>
+    <h1>🧠 Só os Gênios Sabem</h1>
     <nav>
       <ul>
         <li><a href="../index.html">Início</a></li>
         <li><a href="../desafios.html">Desafios</a></li>
         <li><a href="../ebook.html">eBook</a></li>
         <li><a href="../clube.html">Clube dos Gênios</a></li>
+        <li><a href="../artigos.html">Artigos</a></li>
       </ul>
     </nav>
   </header>

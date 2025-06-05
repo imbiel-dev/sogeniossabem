@@ -32,17 +32,57 @@
       display: none;
       margin-top: 10px;
     }
+    @media (max-width: 768px) {
+  .quiz-box {
+    padding: 15px;
+    font-size: 1rem;
+  }
+
+  .pergunta {
+    font-size: 1.05rem;
+  }
+
+  .alternativas button {
+    font-size: 0.95rem;
+    padding: 10px;
+  }
+
+  #proxima-btn, button[onclick*="reiniciarQuiz"] {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+    margin-top: 10px;
+  }
+
+  .resultado {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+.alternativas button {
+  transition: all 0.3s ease;
+}
+
+.alternativas button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
   </style>
+  
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+<link rel="icon" href="img/favicon.png" type="image/png">
 </head>
 <body>
   <header>
-    <h1>Só os Gênios Sabem</h1>
+    <h1>🧠 Só os Gênios Sabem</h1>
     <nav>
       <ul>
         <li><a href="../index.html">Início</a></li>
         <li><a href="../desafios.html">Desafios</a></li>
         <li><a href="../ebook.html">eBook</a></li>
         <li><a href="../clube.html">Clube dos Gênios</a></li>
+        <li><a href="../artigos.html">Artigos</a></li>
       </ul>
     </nav>
   </header>

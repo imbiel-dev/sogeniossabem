@@ -33,17 +33,56 @@
       color: red;
       font-weight: bold;
     }
+
+    @media (max-width: 768px) {
+  input[type='number'] {
+    width: 40px;
+    font-size: 1rem;
+    margin: 5px 4px;
+  }
+
+  button {
+    display: block;
+    width: 90%;
+    margin: 10px auto;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+  }
+
+  ul {
+    font-size: 0.95rem;
+    padding: 0 10px;
+  }
+
+  .resultado {
+    font-size: 0.95rem;
+    padding: 12px;
+    margin: 8px auto;
+  }
+
+  #tentativas {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
   </style>
+  
+<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+
+<link rel="icon" href="img/favicon.png" type="image/png">
 </head>
 <body>
   <header>
-    <h1>Só os Gênios Sabem</h1>
+    <h1>🧠 Só os Gênios Sabem</h1>
     <nav>
       <ul>
         <li><a href="../index.html">Início</a></li>
         <li><a href="../desafios.html">Desafios</a></li>
         <li><a href="../ebook.html">eBook</a></li>
         <li><a href="../clube.html">Clube dos Gênios</a></li>
+        <li><a href="../artigos.html">Artigos</a></li>
       </ul>
     </nav>
   </header>
@@ -60,6 +99,11 @@
       <input type="number" id="d2" min="0" max="9">
       <input type="number" id="d3" min="0" max="9">
       <input type="number" id="d4" min="0" max="9">
+
+      <p style="font-size: 0.9rem; color: #bbb; margin-top: 5px;">
+  (Dígitos entre 0 e 9, sem repetir)
+</p>
+
     </div>
     <button onclick="tentarSenha()">Tentar</button>
     <button onclick="reiniciar()">🔄 Nova Senha</button>
@@ -90,6 +134,11 @@
         parseInt(document.getElementById('d3').value),
         parseInt(document.getElementById('d4').value)
       ];
+
+      if (new Set(tentativa).size < 4) {
+        alert("Cada dígito deve ser único.");
+        return;
+      }
 
       if (new Set(tentativa).size < 4) {
         alert("Cada dígito deve ser único.");
