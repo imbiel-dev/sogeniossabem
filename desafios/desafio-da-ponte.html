@@ -3,32 +3,54 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio da Ponte</title>
   <link rel="stylesheet" href="../style.css">
   <style>
     .lado {
-      border: 2px solid var(--roxo);
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px;
+      border: 2px solid var(--roxo-claro);
+      background: rgba(255,255,255,0.02);
+      border-radius: 15px;
+      padding: 20px;
+      margin: 15px;
+      flex: 1 1 45%;
+      box-shadow: 0 0 15px rgba(210,142,255,0.1);
     }
+
     .pessoas span {
       display: inline-block;
-      background: var(--roxo);
-      color: white;
-      padding: 5px 10px;
-      margin: 5px;
-      border-radius: 8px;
-      cursor: pointer;
+      background: rgba(210,142,255,0.2);
+      color: var(--branco);
+      padding: 8px 14px;
+      margin: 6px;
+      border: 1.5px solid var(--roxo-claro);
+      border-radius: 10px;
+      cursor: default;
+      font-size: 1.1rem;
+      transition: transform 0.2s;
     }
+
+    .pessoas span:hover {
+      transform: scale(1.1);
+      background: rgba(210,142,255,0.35);
+    }
+
     #controle button {
       margin: 5px;
     }
-    #tempo {
-      font-size: 1.2rem;
-      color: var(--roxo);
+    h3 {
+      font-size: 1.3rem;
+      color: var(--roxo-claro);
       font-weight: bold;
+      margin: 15px 0;
     }
+    #tempo {
+      font-size: 1.3rem;
+      color: var(--roxo-claro);
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
     .vitoria {
       color: lime;
       font-weight: bold;
@@ -39,111 +61,134 @@
     }
 
     @media (max-width: 768px) {
-  main {
-    padding: 0 10px;
+  .lado {
+    margin: 12px 0;
+    padding: 12px;
+    font-size: 1rem;
   }
-
+  #controle {
+    font-size: 0.98rem;
+  }
+}
+@media (max-width: 600px) {
+  section > div[style*="display: flex"] {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0 !important;
+  }
   .lado {
     width: 100%;
-    margin-bottom: 15px;
-  }
-
-  .pessoas span {
-    padding: 8px 14px;
-    font-size: 1rem;
-  }
-
-  #controle {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding: 15px 5px;
-  }
-
-  #controle button {
-    flex: 1 1 140px;
-    max-width: 90%;
-    font-size: 1rem;
-  }
-
-  #tempo {
-    font-size: 1.1rem;
     margin: 10px 0;
+    box-sizing: border-box;
+    font-size: 0.98rem;
   }
-
-  div[style*="display: flex"] {
-    flex-direction: column;
-    align-items: center;
+  .pessoas span {
+    font-size: 1rem;
+    padding: 7px 10px;
+    margin: 4px;
+  }
+  #controle {
+    text-align: center;
+  }
+  #controle button {
+    width: 99%;
+    max-width: 320px;
+    margin: 6px 0;
+    font-size: 1rem;
+  }
+}
+@media (max-width: 400px) {
+  .lado {
+    padding: 7px 2px;
+    font-size: 0.95rem;
+  }
+  .pessoas span {
+    padding: 6px 7px;
+    font-size: 0.96rem;
+  }
+  #controle button {
+    font-size: 0.95rem;
+    max-width: 99vw;
+  }
+  h2, h3 {
+    font-size: 1.07rem;
+  }
+  #tempo {
+    font-size: 1.07rem;
   }
 }
 
+
+
   </style>
   
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
-<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="icon" href="../img/favicon.png" type="image/png" sizes="512x512">
 </head>
 <body>
-  <header>
-    <h1>🧠 Só os Gênios Sabem</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Início</a></li>
-        <li><a href="../desafios.html">Desafios</a></li>
-        <li><a href="../ebook.html">eBook</a></li>
-        <li><a href="../clube.html">Clube dos Gênios</a></li>
-        <li><a href="../artigos.html">Artigos</a></li>
-      </ul>
-    </nav>
-  </header>
+ <div id="fundo-estrelas"></div>
 
-  <main>
+  <div id="header"></div>
+
+  <section>
     <h2>Desafio da Ponte 🌉</h2>
-    <p>Quatro pessoas precisam atravessar uma ponte à noite. Apenas duas pessoas podem cruzar por vez e com a lanterna. Quando duas atravessam juntas, vão no ritmo do mais lento. Alguém sempre precisa trazer a lanterna de volta. Todos devem atravessar em no máximo 17 minutos.</p>
+    <p style="max-width: 800px; margin: 15px auto; font-size: 1.1rem; line-height: 1.6;"> 
+    Quatro pessoas precisam atravessar uma ponte à noite. Apenas duas pessoas podem cruzar por vez e com a lanterna. Quando duas atravessam juntas, vão no ritmo do mais lento. Alguém sempre precisa trazer a lanterna de volta. Todos devem atravessar em no máximo 17 minutos.
+    </p>
 
     <div id="tempo">Tempo: 0 min</div>
 
     <div style="display: flex; justify-content: space-around;">
+      <!-- Lado esquerdo da ponte (inicialmente com todos) -->
       <div class="lado" id="esquerda">
         <h3>Lado Esquerdo</h3>
         <div class="pessoas" id="lado-esquerdo"></div>
       </div>
+      <!-- Lado direito da ponte (vazio no início) -->
       <div class="lado" id="direita">
         <h3>Lado Direito</h3>
         <div class="pessoas" id="lado-direito"></div>
       </div>
     </div>
 
+     <!-- Botões de ação para atravessar ou voltar com a lanterna -->
     <div id="controle">
       <h3>Ações:</h3>
-      <button onclick="atravessar('A','B')">Atravessar A + B</button>
-      <button onclick="atravessar('A','C')">Atravessar A + C</button>
-      <button onclick="atravessar('A','D')">Atravessar A + D</button>
-      <button onclick="atravessar('B','C')">Atravessar B + C</button>
-      <button onclick="atravessar('B','D')">Atravessar B + D</button>
-      <button onclick="atravessar('C','D')">Atravessar C + D</button>
-      <button onclick="voltar('A')">Voltar A</button>
-      <button onclick="voltar('B')">Voltar B</button>
-      <button onclick="voltar('C')">Voltar C</button>
-      <button onclick="voltar('D')">Voltar D</button>
-      <button onclick="resetar()">🔄 Reiniciar</button>
+      <button class="botao-futurista" onclick="atravessar('A','B')">Atravessar A + B</button>
+      <button class="botao-futurista" onclick="atravessar('A','C')">Atravessar A + C</button>
+      <button class="botao-futurista" onclick="atravessar('A','D')">Atravessar A + D</button>
+      <button class="botao-futurista" onclick="atravessar('B','C')">Atravessar B + C</button>
+      <button class="botao-futurista" onclick="atravessar('B','D')">Atravessar B + D</button>
+      <button class="botao-futurista" onclick="atravessar('C','D')">Atravessar C + D</button>
+      <button class="botao-futurista" onclick="voltar('A')">Voltar A</button>
+      <button class="botao-futurista" onclick="voltar('B')">Voltar B</button>
+      <button class="botao-futurista" onclick="voltar('C')">Voltar C</button>
+      <button class="botao-futurista" onclick="voltar('D')">Voltar D</button>
+      <button class="botao-futurista" onclick="resetar()">🔄 Reiniciar</button>
     </div>
 
+    <!-- Exibe mensagem de vitória ou falha -->
     <p id="resultado"></p>
-  </main>
+  </section>
 
   <script>
+    // Tempos de travessia de cada pessoa (minutos)
+    // A = 1 min, B = 2 min, C = 5 min, D = 10 min
     const tempos = { A: 1, B: 2, C: 5, D: 10 };
-    let ladoEsquerdo = ['A','B','C','D'];
+    // Lados da ponte: esquerda (início), direita (final)
+    let ladoEsquerdo = ['A','B','C','D']; // Todos começam à esquerda
     let ladoDireito = [];
-    let tempo = 0;
+    let tempo = 0; // Tempo acumulado da travessia
 
+
+    // Atualiza a interface visual: mostra as pessoas em cada lado e o tempo
     function atualizar() {
+      // Atualiza visualmente quem está em cada lado
       document.getElementById('lado-esquerdo').innerHTML = ladoEsquerdo.map(p => `<span>${p}</span>`).join(' ');
       document.getElementById('lado-direito').innerHTML = ladoDireito.map(p => `<span>${p}</span>`).join(' ');
+      // Atualiza tempo
       document.getElementById('tempo').innerText = `Tempo: ${tempo} min`;
 
+      // Se todos atravessaram (lado direito tem 4 pessoas)
       if (ladoDireito.length === 4) {
         document.getElementById('resultado').innerHTML = tempo <= 17
           ? '<p class="vitoria">🎉 Você conseguiu atravessar todos em 17 minutos!</p>'
@@ -151,22 +196,31 @@
       }
     }
 
+    // Função para atravessar duas pessoas da esquerda para a direita
     function atravessar(p1, p2) {
+      // Só atravessa se as duas pessoas estão do lado esquerdo
       if (!ladoEsquerdo.includes(p1) || !ladoEsquerdo.includes(p2)) return alert("Ambos devem estar no lado esquerdo.");
+      // Remove do lado esquerdo e coloca no lado direito
       ladoEsquerdo = ladoEsquerdo.filter(p => p !== p1 && p !== p2);
       ladoDireito.push(p1, p2);
+      // Adiciona ao tempo o maior tempo dos dois (vão no ritmo do mais lento)
       tempo += Math.max(tempos[p1], tempos[p2]);
       atualizar();
     }
 
+    // Função para voltar uma pessoa da direita para a esquerda (trazendo a lanterna)
     function voltar(p) {
+      // Só pode voltar quem já está no lado direito
       if (!ladoDireito.includes(p)) return alert("Essa pessoa não está do lado direito.");
+      // Remove do lado direito e volta para o esquerdo
       ladoDireito = ladoDireito.filter(x => x !== p);
+      // Adiciona ao tempo o tempo individual dessa pessoa
       ladoEsquerdo.push(p);
       tempo += tempos[p];
       atualizar();
     }
 
+    // Reinicia o desafio
     function resetar() {
       ladoEsquerdo = ['A','B','C','D'];
       ladoDireito = [];
@@ -175,7 +229,28 @@
       atualizar();
     }
 
+    // Chama atualizar ao abrir para mostrar o estado inicial
     atualizar();
   </script>
+ 
+<div id="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="../estrelas.js"></script>
+  <script>
+function incluirHTML(id, arquivo) {
+  return fetch(arquivo)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+    });
+}
+
+Promise.all([
+  incluirHTML("header", "../header.html"),
+  incluirHTML("footer", "../footer.html")
+]);
+</script>
+
 </body>
 </html>

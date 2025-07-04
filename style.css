@@ -1,36 +1,62 @@
+/* Cores principais do site, no esquema roxo neon e fundo escuro */
 :root {
-  --preto: #0d0d0d;
+  --preto: #0d0d2a;
   --roxo: #8e44ad;
-  --branco: #f5f5f5;
-  --cinza: #1a1a1a;
+  --branco: #e0e0e0;
+  --cinza: #1a002a;
+  --roxo-claro: #d28eff;
 }
 
+/* Configuração global: box-sizing melhor para layout e rolagem suave */
 * {
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
 
+/* Estilo base do body, com fundo em gradiente roxo escuro e fonte limpa */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--preto);
+  background: linear-gradient(135deg, #0d0d2a, #1a002a);
+  background-size: cover;
   color: var(--branco);
   line-height: 1.6;
   transition: background-color 0.4s ease, color 0.4s ease;
+  overflow-x: hidden; /* Evita scroll horizontal indesejado */
+  position: relative;
 }
 
+/* Fundo animado de estrelas (usado com partículas.js) */
+#fundo-estrelas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none; /* Fundo não interfere nos cliques */
+}
+
+/* Títulos com fonte diferenciada, estilo mais robusto */
+h2, h3 {
+  font-family: 'Segoe UI Semibold', 'Segoe UI', sans-serif;
+}
+
+/* Cabeçalho transparente, centralizado, com animação de entrada */
 header {
-  background-color: var(--roxo);
+  background: transparent;
   padding: 20px;
   text-align: center;
   animation: fadeInDown 0.8s ease-in-out;
 }
 
+/* Tamanho do título principal */
 header h1 {
   margin: 0;
   font-size: 1.8rem;
 }
 
+/* Menu de navegação com flex para responsividade */
 nav ul {
   list-style: none;
   padding: 0;
@@ -41,6 +67,7 @@ nav ul {
   margin-top: 10px;
 }
 
+/* Links do menu com estilo branco e hover roxo */
 nav a {
   color: var(--branco);
   text-decoration: none;
@@ -50,9 +77,15 @@ nav a {
 
 nav a:hover {
   text-decoration: underline;
-  color: #fff1ff;
+  color: var(--roxo-claro);
 }
 
+nav a:focus {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* Conteúdo principal e seções centralizadas */
 main, section {
   padding: 20px;
   max-width: 800px;
@@ -61,17 +94,20 @@ main, section {
   animation: fadeInUp 0.6s ease;
 }
 
+/* Títulos em roxo-claro */
 h2 {
-  color: var(--roxo);
+  color: var(--roxo-claro);
   margin-top: 40px;
 }
 
+/* Listas gerais sem marcadores */
 ul {
   list-style: none;
   padding: 0;
   margin-top: 20px;
 }
 
+/* Cada item da lista com fundo roxo escuro, arredondado e efeito hover */
 ul li {
   background-color: var(--cinza);
   margin: 10px 0;
@@ -95,11 +131,13 @@ ul li a:hover {
   text-decoration: underline;
 }
 
+/* Parágrafos com tamanho de fonte confortável */
 p {
   font-size: 1.1rem;
   margin: 20px 0;
 }
 
+/* Imagens com sombra suave e bordas arredondadas */
 img {
   width: 100%;
   max-width: 300px;
@@ -107,26 +145,171 @@ img {
   box-shadow: 0 0 15px rgba(255,255,255,0.1);
 }
 
-button {
-  background-color: var(--roxo);
+/* Botões futuristas, transparentes, com borda e hover neon */
+button, .botao-futurista {
+  border: 1px solid rgba(255,255,255,0.4);
+  background: transparent;
   color: var(--branco);
   padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 30px;
+  font-size: 1.2rem;
   margin-top: 20px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background-color: #732d91;
+button:hover, .botao-futurista:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+button:focus {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Rodapé discreto, com fundo roxo escuro */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #aaa;
+  background-color: var(--cinza);
+  font-size: 0.9rem;
+  margin-top: 60px;
 }
 
 footer a:hover {
   text-decoration: underline;
 }
 
+/* 🔥 Estilo exclusivo da página de artigos */
+main.artigo {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: auto;
+  text-align: left;
+  line-height: 1.8;
+}
+
+/* Títulos dos artigos em roxo, alinhados à esquerda */
+main.artigo h2,
+main.artigo h3 {
+  color: var(--roxo-claro);
+  margin-top: 40px;
+  font-size: 1.8rem;
+  text-align: left;
+}
+
+main.artigo h3 {
+  font-size: 1.5rem;
+  margin-top: 30px;
+}
+
+/* Parágrafos maiores dentro dos artigos */
+main.artigo p {
+  font-size: 1.15rem;
+  margin: 20px 0;
+  color: var(--branco);
+}
+
+/* Listas dentro de artigos com marcadores personalizados */
+main.artigo ul {
+  margin: 20px 0;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+main.artigo ul li {
+  background-color: transparent;
+  color: var(--branco);
+  padding: 6px 0;
+  border-radius: 0;
+  font-size: 1.1rem;
+  transition: none;
+}
+
+main.artigo ul li::marker {
+  color: var(--roxo-claro);
+}
+
+/* Imagens centralizadas nos artigos */
+main.artigo img {
+  margin: 30px auto;
+  display: block;
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+/* Figuras centralizadas nos artigos */
+main.artigo figure {
+  text-align: center;
+  margin-top: 40px;
+}
+
+/* Legenda das imagens dos artigos */
+main.artigo figcaption {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin-top: 8px;
+}
+
+/* Bloco FAQ estilo futurista, destaque lateral em roxo */
+.faq {
+  background-color: #1a1a1a;
+  border-left: 4px solid var(--roxo-claro);
+  padding: 20px;
+  margin-top: 50px;
+  border-radius: 10px;
+  color: var(--branco);
+}
+
+.faq h2 {
+  margin-top: 0;
+  color: var(--roxo-claro);
+  font-size: 1.6rem;
+}
+
+.faq dl {
+  margin: 0;
+}
+
+.faq dt {
+  font-weight: bold;
+  margin-top: 15px;
+  color: #f0e6ff;
+}
+
+.faq dd {
+  margin-left: 15px;
+  margin-bottom: 10px;
+  color: #ddd;
+}
+
+/* Botão de compra com borda futurista e hover em destaque */
+.btn-comprar {
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: transparent;
+  color: white;
+  padding: 12px 20px;
+  font-weight: bold;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  max-width: 100%;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-comprar:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+}
+
+
+/* Animação de entrada suave de baixo para cima */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -138,6 +321,7 @@ footer a:hover {
   }
 }
 
+/* Animação de entrada suave de cima para baixo */
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -149,21 +333,97 @@ footer a:hover {
   }
 }
 
+/* Responsividade geral para dispositivos móveis */
 @media (max-width: 768px) {
-  header h1 {
-    font-size: 1.4rem;
-  }
-
-  nav ul {
+  .desafio-container {padding: 20px 5px; width: 95%;}
+  header h1 { font-size: 1.4rem; }
+  .balanca-area { flex-direction: column; align-items: center; }
+  .lado-balanca { width: 100%; min-width: unset; margin: 8px 0;}
+  td { flex-direction: column; align-items: flex-start; font-size: 1.4rem; }
+  .info-peca { font-size: 1.4rem; }
+  td b { font-size: 1.4rem; }
+  input[type=number] { width: 100%; max-width: 220px; font-size: 1.5rem; }
+  .botao-futurista { width: 100%; max-width: 300px; font-size: 1.4rem; }
+  h2 { font-size: 1.5rem; }
+  .resultado { font-size: 1.3rem; }
+  .area-botoes { margin-top: 30px; }
+  .lado {
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
   }
-
-  ul li {
-    font-size: 1rem;
+  .bloco {
+    width: 100%;
   }
-
+  .personagem {
+    font-size: 1.4rem;
+    padding: 14px;
+  }
+  .barco {
+    width: 100%;
+    font-size: 1.1rem;
+  }
   button {
     width: 100%;
+    max-width: 300px;
+    margin: 12px auto;
+    display: block;
+    font-size: 1.3rem;
+  }
+  .log, #regras {
+    font-size: 1.1rem;
+  }
+}
+
+/* Telas menores que 400px */
+@media (max-width: 400px) {
+  h2 { font-size: 1.7rem; }
+  .titulo-lado { font-size: 1.5rem; }
+  .info-peca { font-size: 1.6rem; }
+  td { font-size: 1.6rem; }
+  td b { font-size: 1.6rem; }
+  input[type=number] { max-width: 240px; font-size: 1.6rem; }
+  .botao-futurista { max-width: 300px; font-size: 1.6rem; }
+  .resultado { font-size: 1.5rem; }
+  .personagem {
+    font-size: 1.7rem;
+    padding: 16px;
+  }
+  .bloco h3,
+  .barco h3 {
+    font-size: 1.4rem;
+  }
+  button {
+    font-size: 1.4rem;
+    max-width: 280px;
+  }
+  .log, #regras {
+    font-size: 1.25rem;
+  }
+}
+
+/* Telas super pequenas */
+@media (max-width: 375px) {
+  h2 { font-size: 1.5rem; }
+  .titulo-lado { font-size: 1.3rem; }
+  .info-peca { font-size: 1.4rem; }
+  td { font-size: 1.4rem; }
+  td b { font-size: 1.4rem; }
+  input[type=number] { max-width: 200px; font-size: 1.4rem; }
+  .botao-futurista { max-width: 260px; font-size: 1.4rem; }
+  .resultado { font-size: 1.4rem; }
+  .personagem {
+    font-size: 1.5rem;
+    padding: 18px;
+  }
+  .bloco h3,
+  .barco h3 {
+    font-size: 1.2rem;
+  }
+  button {
+    font-size: 1.25rem;
+    max-width: 240px;
+  }
+  .log, #regras {
+    font-size: 1.1rem;
   }
 }

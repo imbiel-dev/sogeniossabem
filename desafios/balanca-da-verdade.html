@@ -1,308 +1,357 @@
 <!-- desafios/balanca-da-verdade.html -->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio: A Balança da Verdade</title>
   <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="../img/favicon.png" type="image/png" sizes="512x512">
   <style>
-    body { text-align: center; color: #fff; background: #111; font-family: Arial, sans-serif; }
-    .area-teste, .area-final {
-      margin: 20px auto;
-      max-width: 1000px;
-      background: #1e1e1e;
-      padding: 20px;
+    /* Área geral do container do desafio, com fundo e bordas integrados ao estilo neon */
+    .desafio-container {
+      background: linear-gradient(135deg, var(--cinza), #120020); /* Gradiente roxo-escuro */
+      padding: 25px 10px;
       border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 900px;
+      margin: 30px auto;
+      box-shadow: 0 0 20px rgba(210, 142, 255, 0.2); /* Sombra roxa neon suave */
+      animation: fadeInUp 0.6s ease; /* Efeito de entrada */
     }
-    input[type=number] {
-      margin: 5px;
-      padding: 8px;
-      width: 60px;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
+
+    /* Área interna da balança, usa flex para dividir os lados */
+    .balanca-area {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    /* Cada lado da balança com fundo escuro translúcido */
+    .lado-balanca {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+      flex: 1 1 45%; /* Cresce ou diminui conforme o espaço, mínimo 260px */
+      margin: 10px;
+      min-width: 260px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    }
+
+    /* Título centralizado e roxo claro */
+    .titulo-lado {
+      color: var(--roxo-claro);
+      font-weight: bold;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
       text-align: center;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 1rem;
+
+    /* Configuração da tabela interna de cada lado */
+    table {
+      width: 100%;
+      color: var(--branco);
+      border-spacing: 10px; /* Espaço entre células */
+    }
+
+   /* Cada célula da tabela com flex, alinhando o texto e input lado a lado */
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px; /* Espaço entre o texto e o input */
+      padding: 6px 0;
+      font-size: 1.1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Div que agrupa o nome da peça e o número, evita quebra estranha */
+    .info-peca {
+      white-space: nowrap;
+    }
+
+ /* Estilo do número de estoque dentro do parêntese */
+    td b {
+      font-weight: normal;
+      color: var(--branco);
+    }
+
+/* Estilo dos campos de input numéricos */
+    input[type=number] {
+      width: 70px;
+      padding: 14px;
       border-radius: 8px;
-      background: #9c27b0;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin: 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background-color: rgba(255,255,255,0.05);
+      color: var(--branco);
+      font-size: 1.2rem;
+      text-align: center;
+      transition: border-color 0.3s ease;
     }
-    button:hover {
-      background: #ab47bc;
+
+/* Foco do input com borda roxa brilhante */
+    input[type=number]:focus {
+      outline: none;
+      border-color: var(--roxo-claro);
+      box-shadow: 0 0 10px rgba(210,142,255,0.3);
     }
+
+/* Área dos botões centralizada */
+    .area-botoes {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    /* Resultado do teste com destaque em branco */
     .resultado {
       margin-top: 15px;
       font-weight: bold;
-    }
-    .lado-balanca {
-      display: inline-block;
-      width: 45%;
-      vertical-align: top;
-    }
-    .titulo-lado {
-      font-weight: bold;
-      margin-bottom: 10px;
       font-size: 1.1rem;
+      color: var(--branco);
     }
-    table {
-      margin: auto;
-      border-collapse: collapse;
-      color: #fff;
-    }
-    td {
-      padding: 6px 12px;
-      vertical-align: top;
-    }
-    .erro {
-      color: #ff4c4c;
-      font-size: 0.85rem;
-      display: block;
-      height: 1em;
-    }
-    nav ul {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      list-style: none;
-      padding: 0;
-    }
-   @media (max-width: 768px) {
-  .lado-balanca {
-    display: block;
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .area-teste, .area-final {
-    padding: 20px 10px;
-    margin-bottom: 30px;
-    overflow-x: auto;
-  }
-
-  .area-teste table,
-  .area-final table {
-    width: 100%;
-  }
-
-  input[type=number] {
-    width: 70px;
-    font-size: 1.2rem;
-    padding: 10px;
-  }
-
-  td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    font-size: 1.1rem;
-  }
-
-  button {
-    width: 90%;
-    max-width: 300px;
-    margin: 12px auto;
-    display: block;
-    font-size: 1.1rem;
-  }
-
-  nav ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-
-  .resultado {
-    font-size: 1rem;
-  }
-}
 
 
-    
   </style>
-  
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
-<link rel="icon" href="img/favicon.png" type="image/png">
 </head>
 <body>
-  <header>
-    <h1>🧠 Só os Gênios Sabem</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Início</a></li>
-        <li><a href="../desafios.html">Desafios</a></li>
-        <li><a href="../ebook.html">eBook</a></li>
-        <li><a href="../clube.html">Clube dos Gênios</a></li>
-        <li><a href="../artigos.html">Artigos</a></li>
-      </ul>
-    </nav>
-  </header>
+<div id="fundo-estrelas"></div>
+<div id="header"></div>
 
-  <section class="area-teste">
-    <h2>Balança Secundária (até 30 peças por teste)</h2>
+<section class="desafio-container">
+ 
+<p style="max-width: 800px; margin: 15px auto; font-size: 1.1rem; line-height: 1.6;">
+  Seu objetivo é descobrir o peso secreto de cada peça usando a <b>Balança Secundária</b>. 
+  Você pode testar combinações, mas cuidado: só tem <b>30 tentativas</b>. 
+  Quando achar que sabe os pesos corretos, use a <b>Balança Principal</b> para fazer o equilíbrio perfeito. 
+  Só os verdadeiros gênios conseguem vencer!
+</p>
+
+  <h2>Balança Secundária (até 30 peças por teste)</h2>
+  <div class="balanca-area">
+    <!-- Lado esquerdo da balança secundária -->
     <div class="lado-balanca">
       <div class="titulo-lado">Prato Esquerdo</div>
       <table><tbody id="tabelaSecundariaEsq"></tbody></table>
     </div>
+     <!-- Lado direito da balança secundária -->
     <div class="lado-balanca">
       <div class="titulo-lado">Prato Direito</div>
       <table><tbody id="tabelaSecundariaDir"></tbody></table>
     </div>
-    <div style="clear: both; padding-top: 20px;">
-      <button onclick="usarBalancaSecundaria()">Testar combinação</button>
-      <div id="saidaSecundaria" class="resultado"></div>
-      <p id="tentativasRestantes"></p>
-    </div>
-  </section>
+  </div>
+  <div class="area-botoes">
+    <button class="botao-futurista" onclick="usarBalancaSecundaria()">Testar combinação</button>
+    <div id="saidaSecundaria" class="resultado"></div>
+    <p id="tentativasRestantes"></p>
+  </div>
+</section>
 
-  <section class="area-final">
-    <h2>Balança Principal (1 tentativa final)</h2>
+<section class="desafio-container">
+  <h2>Balança Principal (1 tentativa final)</h2>
+  <div class="balanca-area">
+    <!-- Lado esquerdo da balança principal -->
     <div class="lado-balanca">
       <div class="titulo-lado">Lado Esquerdo</div>
       <table><tbody id="tabelaPrincipalEsq"></tbody></table>
     </div>
+    <!-- Lado direito da balança principal -->
     <div class="lado-balanca">
       <div class="titulo-lado">Lado Direito</div>
       <table><tbody id="tabelaPrincipalDir"></tbody></table>
     </div>
-    <div style="clear: both; padding-top: 20px;">
-      <button id="botaoPrincipal" onclick="testarBalancaPrincipal()">Testar combinação final</button>
-      <button onclick="reiniciarJogo()">🔁 Reiniciar</button>
-      <div id="saidaPrincipal" class="resultado"></div>
-    </div>
-  </section>
+  </div>
+  <div class="area-botoes">
+    <button id="botaoPrincipal" class="botao-futurista" onclick="testarBalancaPrincipal()">Testar combinação final</button>
+    <button class="botao-futurista" onclick="reiniciarJogo()">🔁 Reiniciar</button>
+    <div id="saidaPrincipal" class="resultado"></div>
+  </div>
+</section>
 
-  <script>
-    let esquerda = ["Vermelha", "Azul", "Verde"];
-    let direita = ["Amarela", "Roxa", "Cinza"];
-    let pesoReal = {};
-    let estoque = {};
-    let tentativas = 30;
-    let tentativaFeita = false;
+<div id="footer"></div>
 
-    function embaralhar(lista) {
-      for (let i = lista.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [lista[i], lista[j]] = [lista[j], lista[i]];
-      }
-      return lista;
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+<script src="../estrelas.js"></script>
+
+<script>
+  // Listas de cores para cada lado da balança
+  let esquerda = ["Vermelha", "Azul", "Verde"];
+  let direita = ["Amarela", "Roxa", "Cinza"];
+  // Objetos que guardam o peso de cada peça e o estoque disponível
+  let pesoReal = {};
+  // Estoque de cada peça (quantas peças ainda disponíveis)
+  let estoque = {};
+  // Tentativas na balança secundária e controle da tentativa final
+  let tentativas = 30;
+  // Indica se a tentativa final já foi feita na balança principal
+  let tentativaFeita = false;
+
+   /* Embaralha uma lista (array) para randomizar cores e valores.
+     Isso deixa o desafio diferente a cada jogo! */
+  function embaralhar(lista) {
+    for (let i = lista.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // índice aleatório
+      [lista[i], lista[j]] = [lista[j], lista[i]]; // troca elementos
     }
+    return lista;
+  }
 
-    function gerarPesosEEstoque() {
-      esquerda = embaralhar(["Vermelha", "Azul", "Verde"]);
-      direita = embaralhar(["Amarela", "Roxa", "Cinza"]);
-      const valores = embaralhar([1, 2, 3, 4, 5, 6]);
-      pesoReal = {};
-      estoque = {};
-      [...esquerda, ...direita].forEach((cor, i) => {
-        pesoReal[cor] = valores[i];
-        estoque[cor] = 20;
-      });
+/* Cada peça recebe um peso secreto (único) e começa com 20 unidades no estoque.
+     O embaralhamento garante que os pesos são distribuídos aleatoriamente. */
+  function gerarPesosEEstoque() {
+    // Novas listas embaralhadas de cores
+    esquerda = embaralhar(["Vermelha", "Azul", "Verde"]);
+    direita = embaralhar(["Amarela", "Roxa", "Cinza"]);
+    // Pesos possíveis: de 1 a 6 (embaralhados)
+    const valores = embaralhar([1, 2, 3, 4, 5, 6]);
+    pesoReal = {};
+    estoque = {};
+    // Atribui peso e estoque para cada cor
+    [...esquerda, ...direita].forEach((cor, i) => {
+      pesoReal[cor] = valores[i];
+      estoque[cor] = 20; // 20 unidades disponíveis para cada peça
+    });
+  }
+
+  /* Gera as linhas de cada cor com o estoque atual e um campo <input> para informar quantas peças
+     vão em cada lado da balança secundária (prato esquerdo e direito).
+     Os IDs dos inputs seguem padrão para fácil acesso: secEsq-cor ou secDir-cor. */
+function criarTabelaSecundaria() {
+  const tbodyEsq = document.getElementById("tabelaSecundariaEsq");
+  const tbodyDir = document.getElementById("tabelaSecundariaDir");
+  tbodyEsq.innerHTML = "";
+  tbodyDir.innerHTML = "";
+
+  // Lado esquerdo
+  esquerda.forEach(cor => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <div class="info-peca">${cor} (<b id='estoque-${cor}'>20</b>):</div>
+        <input type='number' min='0' max='20' id='secEsq-${cor}' value='0'>
+      </td>`;
+    tbodyEsq.appendChild(tr);
+  });
+
+  // Lado direito
+  direita.forEach(cor => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <div class="info-peca">${cor} (<b id='estoque-${cor}'>20</b>):</div>
+        <input type='number' min='0' max='20' id='secDir-${cor}' value='0'>
+      </td>`;
+    tbodyDir.appendChild(tr);
+  });
+}
+
+/* Parecida com a secundária, mas agora com no máximo 10 peças de cada cor para o teste final. */
+  function criarTabelaPrincipal() {
+    const tbodyEsq = document.getElementById("tabelaPrincipalEsq");
+    const tbodyDir = document.getElementById("tabelaPrincipalDir");
+    tbodyEsq.innerHTML = "";
+    tbodyDir.innerHTML = "";
+    // Campos para cada cor do lado esquerdo (até 10 peças)
+    esquerda.forEach(cor => {
+      tbodyEsq.innerHTML += `<tr><td>${cor} (10): <input type='number' min='0' max='10' id='priEsq-${cor}' value='0'></td></tr>`;
+    });
+    // Campos para cada cor do lado direito (até 10 peças)
+    direita.forEach(cor => {
+      tbodyDir.innerHTML += `<tr><td>${cor} (10): <input type='number' min='0' max='10' id='priDir-${cor}' value='0'></td></tr>`;
+    });
+  }
+
+  /* Soma o peso total de cada lado da balança secundária conforme os valores digitados.
+     Atualiza o estoque das peças usadas. Diz se a balança ficou equilibrada, levemente ou muito inclinada,
+     dependendo da diferença de pesos. Limita o total de peças a 30 por teste e decrementa as tentativas. */
+  function usarBalancaSecundaria() {
+    if (tentativas <= 0) return; // Se acabou as tentativas, não faz nada
+    let totalEsq = 0, totalDir = 0, totalPecas = 0;
+    // Percorre todas as cores (de ambos os lados)
+    [...esquerda, ...direita].forEach(cor => {
+      // Busca o valor de cada input, se não tiver, assume 0
+      const esq = parseInt(document.getElementById(`secEsq-${cor}`)?.value) || 0;
+      const dir = parseInt(document.getElementById(`secDir-${cor}`)?.value) || 0;
+      totalPecas += esq + dir;
+      totalEsq += esq * pesoReal[cor];
+      totalDir += dir * pesoReal[cor];
+      estoque[cor] -= (esq + dir); // Atualiza o estoque da peça usada
+      document.getElementById(`estoque-${cor}`).innerText = estoque[cor];
+    });
+    // Se usou mais de 30 peças, não permite o teste
+    if (totalPecas > 30) {
+      document.getElementById("saidaSecundaria").innerText = "Máximo 30 peças por teste.";
+      return;
     }
+    // Calcula diferença de peso e monta resultado
+    let diff = totalEsq - totalDir;
+    let resultado = "";
+    const abs = Math.abs(diff);
+    // Define o resultado baseado no peso
+    if (diff === 0) resultado = "A balança ficou equilibrada.";
+    else if (abs <= 2) resultado = `A balança virou levemente à ${diff > 0 ? 'esquerda' : 'direita'}.`;
+    else if (abs <= 5) resultado = `A balança virou claramente à ${diff > 0 ? 'esquerda' : 'direita'}.`;
+    else resultado = `A balança virou bruscamente à ${diff > 0 ? 'esquerda' : 'direita'}.`;
+    tentativas--; // Decrementa tentativas
+    document.getElementById("tentativasRestantes").innerText = `Tentativas restantes: ${tentativas}`;
+    document.getElementById("saidaSecundaria").innerText = resultado;
+  }
 
-    function criarTabelaSecundaria() {
-      const tbodyEsq = document.getElementById("tabelaSecundariaEsq");
-      const tbodyDir = document.getElementById("tabelaSecundariaDir");
-      tbodyEsq.innerHTML = "";
-      tbodyDir.innerHTML = "";
-      esquerda.forEach(cor => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${cor} (<span id='estoque-${cor}'>20</span>): <input type='number' min='0' max='20' id='secEsq-${cor}' value='0'></td>`;
-        tbodyEsq.appendChild(tr);
-      });
-      direita.forEach(cor => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${cor} (<span id='estoque-${cor}'>20</span>): <input type='number' min='0' max='20' id='secDir-${cor}' value='0'></td>`;
-        tbodyDir.appendChild(tr);
-      });
-    }
+   /* Aqui é o teste final! O jogador só pode tentar 1 vez.
+     Se os pesos batem certinho, ele vence. Senão, mostra os pesos dos dois lados.
+     O botão é desativado após usar. */
+  function testarBalancaPrincipal() {
+    if (tentativaFeita) return; // Só pode tentar 1 vez
+    tentativaFeita = true;
+    document.getElementById("botaoPrincipal").disabled = true;
+    let totalEsq = 0, totalDir = 0;
+    [...esquerda, ...direita].forEach(cor => {
+      const esq = parseInt(document.getElementById(`priEsq-${cor}`)?.value) || 0;
+      const dir = parseInt(document.getElementById(`priDir-${cor}`)?.value) || 0;
+      totalEsq += esq * pesoReal[cor];
+      totalDir += dir * pesoReal[cor];
+    });
+    // Mensagem final de vitória ou derrota
+    const resultado = (totalEsq === totalDir && totalEsq !== 0)
+      ? "🎉 Equilíbrio perfeito! Você venceu!"
+      : `❌ Desequilíbrio detectado. (${totalEsq}kg vs ${totalDir}kg)`;
+    document.getElementById("saidaPrincipal").innerText = resultado;
+  }
 
-    function criarTabelaPrincipal() {
-      const tbodyEsq = document.getElementById("tabelaPrincipalEsq");
-      const tbodyDir = document.getElementById("tabelaPrincipalDir");
-      tbodyEsq.innerHTML = "";
-      tbodyDir.innerHTML = "";
-      esquerda.forEach(cor => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${cor} (10): <input type='number' min='0' max='10' id='priEsq-${cor}' value='0'></td>`;
-        tbodyEsq.appendChild(tr);
-      });
-      direita.forEach(cor => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `<td>${cor} (10): <input type='number' min='0' max='10' id='priDir-${cor}' value='0'></td>`;
-        tbodyDir.appendChild(tr);
-      });
-    }
+ /* Reseta tudo: tentaivas, pesos, estoque, campos e tabelas.
+     É chamada no início do jogo e no botão "Reiniciar". */
+  function reiniciarJogo() {
+    tentativaFeita = false;
+    tentativas = 30;
+    document.getElementById("botaoPrincipal").disabled = false;
+    gerarPesosEEstoque();
+    criarTabelaSecundaria();
+    criarTabelaPrincipal();
+    document.getElementById("saidaSecundaria").innerText = "";
+    document.getElementById("saidaPrincipal").innerText = "";
+    document.getElementById("tentativasRestantes").innerText = `Tentativas restantes: ${tentativas}`;
+  }
 
-    function usarBalancaSecundaria() {
-      if (tentativas <= 0) return;
-      let totalEsq = 0, totalDir = 0, totalPecas = 0;
-      [...esquerda, ...direita].forEach(cor => {
-        const esq = parseInt(document.getElementById(`secEsq-${cor}`)?.value) || 0;
-        const dir = parseInt(document.getElementById(`secDir-${cor}`)?.value) || 0;
-        totalPecas += esq + dir;
-        totalEsq += esq * pesoReal[cor];
-        totalDir += dir * pesoReal[cor];
-        estoque[cor] -= (esq + dir);
-        document.getElementById(`estoque-${cor}`).innerText = estoque[cor];
+/* Inicia o jogo assim que a página carrega */
+  reiniciarJogo();
+
+ /* Função assíncrona que faz um fetch dos arquivos HTML do cabeçalho e rodapé,
+     insere o conteúdo nas respectivas divs, deixando seu site modular e mais fácil de manter. */
+ 
+  function incluirHTML(id, arquivo) {
+    return fetch(arquivo)
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById(id).innerHTML = html;
       });
-      if (totalPecas > 30) {
-        document.getElementById("saidaSecundaria").innerText = "Máximo 30 peças por teste.";
-        return;
-      }
-      let diff = totalEsq - totalDir;
-      let resultado = "";
-      const abs = Math.abs(diff);
-      if (diff === 0) resultado = "A balança ficou equilibrada.";
-      else if (abs <= 2) resultado = `A balança virou levemente à ${diff > 0 ? 'esquerda' : 'direita'}.`;
-      else if (abs <= 5) resultado = `A balança virou claramente à ${diff > 0 ? 'esquerda' : 'direita'}.`;
-      else resultado = `A balança virou bruscamente à ${diff > 0 ? 'esquerda' : 'direita'}.`;
-      tentativas--;
-      document.getElementById("tentativasRestantes").innerText = `Tentativas restantes: ${tentativas}`;
-      document.getElementById("saidaSecundaria").innerText = resultado;
-    }
+  }
 
-    function testarBalancaPrincipal() {
-      if (tentativaFeita) return;
-      tentativaFeita = true;
-      document.getElementById("botaoPrincipal").disabled = true;
-      let totalEsq = 0, totalDir = 0;
-      [...esquerda, ...direita].forEach(cor => {
-        const esq = parseInt(document.getElementById(`priEsq-${cor}`)?.value) || 0;
-        const dir = parseInt(document.getElementById(`priDir-${cor}`)?.value) || 0;
-        totalEsq += esq * pesoReal[cor];
-        totalDir += dir * pesoReal[cor];
-      });
-      const resultado = (totalEsq === totalDir && totalEsq !== 0)
-        ? "🎉 Equilíbrio perfeito! Você venceu!"
-        : `❌ Desequilíbrio detectado. (${totalEsq}kg vs ${totalDir}kg)`;
-      document.getElementById("saidaPrincipal").innerText = resultado;
-    }
-
-    function reiniciarJogo() {
-      tentativaFeita = false;
-      tentativas = 30;
-      document.getElementById("botaoPrincipal").disabled = false;
-      gerarPesosEEstoque();
-      criarTabelaSecundaria();
-      criarTabelaPrincipal();
-      document.getElementById("saidaSecundaria").innerText = "";
-      document.getElementById("saidaPrincipal").innerText = "";
-      document.getElementById("tentativasRestantes").innerText = `Tentativas restantes: ${tentativas}`;
-    }
-
-    reiniciarJogo();
-  </script>
+// Carrega o header e footer depois que a página abre
+  Promise.all([
+    incluirHTML("header", "../header.html"),
+    incluirHTML("footer", "../footer.html")
+  ]);
+</script>
 </body>
 </html>

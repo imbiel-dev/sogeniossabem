@@ -2,187 +2,223 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Só os Gênios Sabem - O Código dos 5 Números</title>
   <link rel="stylesheet" href="../style.css" />
   <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0 10px 40px;
-      text-align: center;
-    }
-    header {
-      padding: 20px 0;
-      margin-bottom: 25px;
-    }
-    header h1 {
-      margin: 0;
-      font-weight: 700;
-    }
-    main {
-      max-width: 900px;
-      margin: 0 auto;
-      background: #1e1e1e;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.6);
-      padding: 25px 30px;
-    }
-    button {
-      background: #9c27b0;
-      border: none;
-      color: white;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 10px 18px;
-      margin: 10px 5px;
-      border-radius: 7px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      white-space: normal;
-      min-height: 50px;
-      text-align: left;
-      flex: 1 1 calc(45%);
-      max-width: 400px;
-    }
-    button:hover:not(:disabled) {
-      background: #ab47bc;
-    }
-    button:disabled {
-      background: #6a1b9a;
-      cursor: default;
-    }
-    #perguntas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    input[type=number] {
-      width: 50px;
-      padding: 5px;
-      font-size: 1rem;
-      margin: 0 5px 15px;
-      border-radius: 6px;
-      border: none;
-      text-align: center;
-    }
-    #respostas {
-      margin-top: 20px;
-      max-height: 220px;
-      overflow-y: auto;
-      background: #2a2a2a;
-      border-radius: 10px;
-      padding: 15px;
-      text-align: left;
-      font-size: 0.95rem;
-      line-height: 1.3;
-    }
-    #resultado {
-      font-weight: 700;
-      font-size: 1.3rem;
-      margin-top: 25px;
-      min-height: 40px;
-    }
-    .btn-group {
-      margin-top: 15px;
-    }
+    /* 🔐 Visual do desafio Código dos 5 Números */
+.desafio-codigo {
+  background: linear-gradient(135deg, var(--cinza), #120020);
+  padding: 25px 10px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 900px;
+  margin: 30px auto;
+  box-shadow: 0 0 20px rgba(210, 142, 255, 0.2);
+  animation: fadeInUp 0.6s ease;
+  text-align: center;
+}
 
-    @media (max-width: 768px) {
-  main {
-    padding: 20px 10px;
-  }
+.desafio-codigo h2 {
+  color: var(--roxo-claro);
+  margin-bottom: 15px;
+}
 
-  #perguntas {
+.area-perguntas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.area-perguntas button {
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.05);
+  color: var(--branco);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 1rem;
+  flex: 1 1 calc(45%);
+  min-width: 180px;
+  max-width: 400px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.area-perguntas button:hover:not(:disabled) {
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+.area-perguntas button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.area-respostas {
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 10px;
+  max-height: 220px;
+  overflow-y: auto;
+  text-align: left;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.area-inputs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.area-inputs input {
+  width: 70px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.05);
+  color: var(--branco);
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.area-inputs input:focus {
+  outline: none;
+  border-color: var(--roxo-claro);
+  box-shadow: 0 0 10px rgba(210,142,255,0.3);
+}
+
+.resultado {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: var(--branco);
+  margin-top: 20px;
+}
+
+/* Responsividade: Código dos 5 Números */
+@media (max-width: 768px) {
+  .area-perguntas {
     flex-direction: column;
-    gap: 12px;
   }
-
-  #perguntas button {
+  .area-inputs {
+    flex-direction: column;
+    align-items: center;
+  }
+  .area-inputs input {
     width: 100%;
-    max-width: 100%;
-    font-size: 1rem;
-    text-align: left;
-    padding: 12px;
+    max-width: 220px;
+    font-size: 1.5rem;
   }
-
-  input[type=number] {
-    width: 50px;
-    font-size: 1.1rem;
-    margin: 5px;
-    padding: 8px;
-  }
-
-  .btn-group button {
+  .botao-futurista {
     width: 100%;
     max-width: 300px;
-    margin: 8px auto;
-    font-size: 1.05rem;
-    display: block;
+    font-size: 1.4rem;
   }
-
-  #respostas {
-    max-height: 300px;
-    font-size: 0.95rem;
-    padding: 12px;
-  }
-
-  #resultado {
-    font-size: 1.2rem;
-  }
-
-  nav ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  header h1 {
-    font-size: 1.5rem;
+  .resultado {
+    font-size: 1.4rem;
   }
 }
 
+@media (max-width: 400px) {
+  .area-perguntas button {
+    font-size: 1.3rem;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 14px;
+  }
+  .area-inputs input {
+    font-size: 1.4rem;
+    max-width: 180px;
+    padding: 16px;
+  }
+  .area-respostas {
+    font-size: 1.08rem;
+    padding: 10px;
+  }
+  .botao-futurista {
+    font-size: 1.2rem;
+    max-width: 200px;
+    padding: 12px;
+  }
+  .resultado {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .area-perguntas button {
+    font-size: 1.15rem;
+    max-width: 160px;
+    padding: 12px;
+  }
+  .area-inputs input {
+    font-size: 1.2rem;
+    max-width: 120px;
+    padding: 12px;
+  }
+  .area-respostas {
+    font-size: 1rem;
+    padding: 8px;
+  }
+  .botao-futurista {
+    font-size: 1rem;
+    max-width: 120px;
+    padding: 10px;
+  }
+  .resultado {
+    font-size: 1rem;
+  }
+}
+
+
+
   </style>
   
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
-<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="icon" href="../img/favicon.png" type="image/png" sizes="512x512">
 </head>
 
 <body>
-  <header>
-    <h1>🧠 Só os Gênios Sabem</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Início</a></li>
-        <li><a href="../desafios.html">Desafios</a></li>
-        <li><a href="../ebook.html">eBook</a></li>
-        <li><a href="../clube.html">Clube dos Gênios</a></li>
-        <li><a href="../artigos.html">Artigos</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-    <p>Descubra a sequência secreta de 5 números únicos entre 1 e 10. Escolha até <strong>10 perguntas</strong> para receber respostas antes de tentar adivinhar.</p>
-    <div id="perguntas"></div>
-    <div id="respostas"></div>
+
+  <div id="fundo-estrelas"></div>
+
+  <div id="header"></div>
+
+  <section class="desafio-codigo">
+    <p style="max-width: 800px; margin: 15px auto; font-size: 1.1rem; line-height: 1.6;">
+    Descubra a sequência secreta de <b>5 números únicos entre 1 e 10</b>. Você pode fazer até <b>10 perguntas</b> para tentar adivinhar a sequência correta.
+    </p>
+    <!-- Área dos botões de perguntas -->
+    <div id="perguntas" class="area-perguntas"></div>
+ <!-- Respostas exibidas ao jogador -->
+    <div id="respostas" class="area-respostas"></div>
+<!-- Área onde o jogador digita a tentativa -->
     <div id="tentativa" style="display:none;">
       <p>Digite os 5 números na ordem correta:</p>
-      <input type="number" min="1" max="10" id="n1" />
-      <input type="number" min="1" max="10" id="n2" />
-      <input type="number" min="1" max="10" id="n3" />
-      <input type="number" min="1" max="10" id="n4" />
-      <input type="number" min="1" max="10" id="n5" />
-      <div class="btn-group">
-        <button id="verificarBtn" onclick="verificarResposta()">Verificar</button>
-        <button onclick="reiniciarJogo()">Reiniciar</button>
+      <div class="area-inputs"></div>
+        <input type="number" min="1" max="10" id="n1" />
+        <input type="number" min="1" max="10" id="n2" />
+        <input type="number" min="1" max="10" id="n3" />
+        <input type="number" min="1" max="10" id="n4" />
+        <input type="number" min="1" max="10" id="n5" />
       </div>
+        <div class="area-botoes">
+          <button class="botao-futurista" id="verificarBtn" onclick="verificarResposta()">Verificar</button>
+          <button class="botao-futurista" onclick="reiniciarJogo()">🔄 Reiniciar</button>
+        </div>
     </div>
-    <div id="resultado"></div>
-  </main>
+     <!-- Resultado do desafio: acerto ou erro -->
+    <div id="resultado" class="resultado"></div>
+  </section>
 
+  
 <script>
+  // Cada pergunta é um array: [texto, função para gerar a resposta baseada na sequência secreta]
   const perguntas = [
     ["Quantos números pares há na sequência?", () => seq.filter(n => n % 2 === 0).length],
     ["Quantos números maiores que 5 existem na sequência?", () => seq.filter(n => n > 5).length],
@@ -221,10 +257,16 @@
     ["O número na posição 4 é menor que 5?", () => (seq[3] < 5 ? "Sim" : "Não")]
   ];
 
+  // VARIÁVEIS DE CONTROLE
+  // seq: guarda a sequência secreta
+  // perguntasFeitas: quantas perguntas já foram feitas
+  // maxPerguntas: limite máximo de perguntas por rodada
   let seq = [];
   let perguntasFeitas = 0;
   const maxPerguntas = 10;
 
+  // EMBARALHA UMA LISTA (Fisher-Yates)
+  // Usado para criar a sequência secreta e sortear os números de 1 a 10
   function embaralhar(lista) {
     for (let i = lista.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -233,17 +275,20 @@
     return lista;
   }
 
+  // GERA UMA NOVA SEQUÊNCIA SECRETA DE 5 NÚMEROS ÚNICOS ENTRE 1 E 10
   function gerarSequencia() {
     const numeros = embaralhar([1,2,3,4,5,6,7,8,9,10]);
     seq = numeros.slice(0, 5);
   }
 
+  // MONTA OS BOTÕES DE PERGUNTAS NO HTML
+  // Cria um botão para cada pergunta e limpa as respostas
   function montarPerguntas() {
     const div = document.getElementById("perguntas");
     div.innerHTML = "";
     perguntas.forEach((p, i) => {
       const btn = document.createElement("button");
-      btn.textContent = p[0];
+      btn.textContent = p[0]; // Texto da pergunta
       btn.onclick = () => responderPergunta(i, btn);
       div.appendChild(btn);
     });
@@ -253,23 +298,32 @@
     perguntasFeitas = 0;
   }
 
+  // AO CLICAR EM UMA PERGUNTA, MOSTRA A RESPOSTA
+  // Desabilita o botão da pergunta e conta quantas perguntas já foram feitas
+  // Quando chegar no máximo, libera o campo para tentar adivinhar a sequência
   function responderPergunta(i, btn) {
     if (perguntasFeitas >= maxPerguntas) return;
-    const resposta = perguntas[i][1]();
+    const resposta = perguntas[i][1](); // Executa a função que retorna a resposta
     const respostasDiv = document.getElementById("respostas");
     respostasDiv.innerHTML += `<p><strong>${perguntas[i][0]}</strong><br>Resposta: ${resposta}</p>`;
     perguntasFeitas++;
-    btn.disabled = true;
+    btn.disabled = true;// Desativa o botão dessa pergunta
+    // Se já atingiu o limite, exibe os campos de tentativa
     if (perguntasFeitas >= maxPerguntas) {
       document.getElementById("tentativa").style.display = "block";
-      // Desabilitar todas perguntas restantes
+      // Desabilita todos os outros botões de perguntas
       const botoes = document.querySelectorAll("#perguntas button:not(:disabled)");
       botoes.forEach(b => b.disabled = true);
     }
   }
 
+  // VERIFICA A TENTATIVA DO JOGADOR
+  // Compara o que o jogador digitou com a sequência secreta
+  // Mostra mensagem de sucesso ou erro e trava o jogo até reiniciar
   function verificarResposta() {
+    // Pega os números digitados nos inputs
   const tentativa = [1,2,3,4,5].map(i => parseInt(document.getElementById(`n${i}`).value));
+  // Compara com a sequência correta
   const correto = JSON.stringify(tentativa) === JSON.stringify(seq);
   const resultadoDiv = document.getElementById("resultado");
   const verificarBtn = document.getElementById("verificarBtn");
@@ -279,13 +333,15 @@
     resultadoDiv.innerHTML = "<span style='color:crimson'>❌ A sequência está errada. Reinicie o jogo.</span>";
   }
   verificarBtn.disabled = true;
-  // Desabilita todos botões de perguntas para travar após a tentativa
+  // Travar todos os botões de perguntas depois da tentativa
   document.querySelectorAll("#perguntas button").forEach(b => b.disabled = true);
 }
 
+// REINICIA O JOGO: GERA NOVA SEQUÊNCIA, RESSETA CAMPOS E BOTÕ
   function reiniciarJogo() {
     gerarSequencia();
     montarPerguntas();
+    // Limpa os campos de input da tentativa
     document.getElementById("n1").value = "";
     document.getElementById("n2").value = "";
     document.getElementById("n3").value = "";
@@ -295,7 +351,28 @@
     document.getElementById("respostas").innerHTML = "";
   }
 
+  // Inicia o jogo ao carregar a página
   reiniciarJogo();
 </script>
+
+<div id="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="../estrelas.js"></script>
+  <script>
+function incluirHTML(id, arquivo) {
+  return fetch(arquivo)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+    });
+}
+
+Promise.all([
+  incluirHTML("header", "../header.html"),
+  incluirHTML("footer", "../footer.html")
+]);
+</script>
+
 </body>
 </html>

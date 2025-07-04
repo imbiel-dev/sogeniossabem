@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://sogeniossabem.com.br/index.html</loc>
-  </url>
-  <url>
-    <loc>https://sogeniossabem.com.br/desafios.html</loc>
-  </url>
-  <url>
-    <loc>https://sogeniossabem.com.br/ebook.html</loc>
-  </url>
-  <url>
-    <loc>https://sogeniossabem.com.br/clube.html</loc>
-  </url>
-  <url>
-    <loc>https://sogeniossabem.com.br/artigos/como-ser-mais-inteligente.html</loc>
-  </url>
+  <url><loc>https://sogeniossabem.com.br/index.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos.html</loc></url>
+
+  <!-- Artigos -->
+  <url><loc>https://sogeniossabem.com.br/artigos/Artigo-inteligencia-ai.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/Artigo-inteligencia-artificial.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/Artigo-inteligencia-emocional.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/Artigo-inteligencia-social.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/Artigo-memoria-cerebro.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/Como-Desenvolver-Logica.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/Como-melhorar-inteligencia.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/Como-treinar-o-cerebro-2025.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/artigos/inteligente-ou-nao.html</loc></url>
+
+  <!-- Desafios e quizzes -->
+  <url><loc>https://sogeniossabem.com.br/desafios/einstein.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/desafio-da-ponte.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/missionarios-canibais.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/desafio-da-senha.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/balanca-da-verdade.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/desafio-codigo-numerico.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/desafio-conselho.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/desafio-barco-nuclear.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/quiz-logica-raciocinio.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/quiz-ciencia-curiosidades.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/quiz-raciocinio-matematico.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/quiz-raciocinio-fisico.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/quiz-interpretacao-frases.html</loc></url>
+  <url><loc>https://sogeniossabem.com.br/desafios/quiz-conhecimentos-gerais.html</loc></url>
 </urlset>

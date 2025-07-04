@@ -3,6 +3,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio de Einstein</title>
   <link rel="stylesheet" href="../style.css">
   <style>
@@ -17,19 +18,37 @@
       text-align: center;
       transition: background-color 0.3s, border 0.3s;
     }
-    th {
-      background-color: var(--roxo);
-    }
     select {
       width: 100%;
-      padding: 5px;
+      padding: 10px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      color: var(--roxo);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 1rem;
+      appearance: none;
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23D28EFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px top 50%;
+      background-size: 18px;
     }
+
+    select:focus {
+      outline: none;
+      border-color: var(--roxo-claro);
+      box-shadow: 0 0 10px rgba(210,142,255,0.3);
+    }
+    select option {
+      color: #efdcff;
+      background: #24003a;
+    }
+
     #verificar {
       margin-top: 20px;
     }
     .dicas {
       text-align: left;
-      background-color: #1a1a1a;
       padding: 20px;
       border-radius: 10px;
       margin: 20px auto;
@@ -57,63 +76,64 @@
         box-shadow: 0 0 20px #00ff88;
       }
     }
-
-    @media (max-width: 768px) {
-  table {
-    font-size: 0.8rem;
-    overflow-x: auto;
-    display: block;
-    white-space: nowrap;
-  }
-
-  select {
-    font-size: 0.9rem;
-    padding: 4px;
-  }
-
+@media (max-width: 768px) {
   .dicas {
-    font-size: 0.9rem;
+    max-width: 95%;
     padding: 15px;
+    font-size: 0.95rem;
   }
-
-  .dicas ol {
-    padding-left: 15px;
+  table {
+    font-size: 0.97rem;
   }
-
-  button {
-    width: 90%;
-    font-size: 1rem;
-    padding: 12px;
-    margin: 20px auto;
-    display: block;
-    border-radius: 10px;
-  }
-
-  #resultado {
-    font-size: 1rem;
-    margin-top: 20px;
+  th, td {
+    padding: 6px;
   }
 }
 
+@media (max-width: 400px), (max-width: 375px) {
+  main h2 {
+    font-size: 1.1rem;
+  }
+  .dicas {
+    max-width: 99%;
+    padding: 8px;
+    font-size: 0.90rem;
+  }
+  table, th, td {
+    font-size: 0.85rem;
+    padding: 4px;
+  }
+  select {
+    font-size: 0.98rem;
+    padding: 7px;
+    min-width: 70px;
+  }
+  th, td {
+    min-width: 55px;
+    max-width: 65px;
+    word-break: break-word;
+  }
+}
+
+/* Opção para permitir rolagem horizontal em telas pequenas */
+@media (max-width: 400px), (max-width: 375px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+    
+
   </style>
   
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
-<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="icon" href="../img/favicon.png" type="image/png" sizes="512x512">
 </head>
 <body>
-  <header>
-    <h1>🧠 Só os Gênios Sabem</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Início</a></li>
-        <li><a href="../desafios.html">Desafios</a></li>
-        <li><a href="../ebook.html">eBook</a></li>
-        <li><a href="../clube.html">Clube dos Gênios</a></li>
-        <li><a href="../artigos.html">Artigos</a></li>
-      </ul>
-    </nav>
-  </header>
+ <div id="fundo-estrelas"></div>
+
+  <div id="header"></div>
 
   <main>
     <h2>Desafio de Einstein 🧠</h2>
@@ -158,7 +178,9 @@
   </main>
 
   <script>
+    // Categorias de características por casa
     const categorias = ['Cor', 'Nacionalidade', 'Bebida', 'Cigarro', 'Animal'];
+    // Opções possíveis para cada categoria
     const opcoes = {
       Cor: ['Vermelha', 'Verde', 'Branca', 'Amarela', 'Azul'],
       Nacionalidade: ['Britânico', 'Sueco', 'Dinamarquês', 'Norueguês', 'Alemão'],
@@ -167,6 +189,7 @@
       Animal: ['Cachorro', 'Pássaro', 'Gato', 'Cavalo', 'Peixe']
     };
 
+    // Cores reais de cada casa (usadas para colorir ao selecionar Cor)
     const corHex = {
       Vermelha: '#ff4d4d',
       Verde: '#2ecc71',
@@ -175,6 +198,7 @@
       Azul: '#3498db'
     };
 
+    // Resposta correta do puzzle (cada linha = categoria, cada coluna = casa)
     const respostas = {
       Cor: ['Amarela', 'Azul', 'Vermelha', 'Verde', 'Branca'],
       Nacionalidade: ['Norueguês', 'Dinamarquês', 'Britânico', 'Alemão', 'Sueco'],
@@ -185,42 +209,47 @@
 
     const tabela = document.getElementById("tabela-einstein");
 
-    categorias.forEach(categoria => {
-      const tr = document.createElement("tr");
-      for (let i = 0; i < 5; i++) {
-        const td = document.createElement("td");
-        const select = document.createElement("select");
-        select.name = `${categoria}-${i}`;
-        const defaultOption = document.createElement("option");
-        defaultOption.text = categoria;
-        defaultOption.disabled = true;
-        defaultOption.selected = true;
-        select.appendChild(defaultOption);
+    categorias.forEach((categoria, linha) => {
+  const tr = document.createElement("tr");
+  for (let i = 0; i < 5; i++) {
+    const td = document.createElement("td");
+    const select = document.createElement("select");
+    select.name = `${categoria}-${i}`;
+    
+    // Opção inicial vazia
+    const optVazio = document.createElement("option");
+    optVazio.text = "—";
+    optVazio.disabled = true;
+    optVazio.selected = true;
+    select.appendChild(optVazio);
 
-        opcoes[categoria].forEach(opcao => {
-          const option = document.createElement("option");
-          option.value = opcao;
-          option.text = opcao;
-          select.appendChild(option);
-        });
-
-        if (categoria === 'Cor') {
-          select.addEventListener('change', () => {
-            const coluna = i;
-            const cor = corHex[select.value] || 'transparent';
-            const tds = document.querySelectorAll(`td:nth-child(${coluna + 1})`);
-            tds.forEach(td => {
-              td.style.backgroundColor = cor;
-            });
-          });
-        }
-
-        td.appendChild(select);
-        tr.appendChild(td);
-      }
-      tabela.appendChild(tr);
+    // Adiciona opções válidas para cada categoria
+    opcoes[categoria].forEach(opcao => {
+      const opt = document.createElement("option");
+      opt.value = opcao;
+      opt.text = opcao;
+      select.appendChild(opt);
     });
 
+    // Se for linha das cores, pinta a coluna ao escolher a cor
+    if (categoria === 'Cor') {
+      select.addEventListener('change', () => {
+        const cor = corHex[select.value] || 'transparent';
+        const tds = document.querySelectorAll(`td:nth-child(${i + 1})`);
+        tds.forEach(td => {
+          td.style.transition = 'background-color 0.4s ease';
+          td.style.backgroundColor = cor;
+        });
+      });
+    }
+
+    td.appendChild(select);
+    tr.appendChild(td);
+  }
+  tabela.appendChild(tr);
+});
+
+//  VERIFICA A SOLUÇÃO DO USUÁRIO
     function verificarSolucao() {
       let correto = true;
       categorias.forEach((categoria, linha) => {
@@ -242,6 +271,7 @@
         tds.forEach(td => td.classList.remove("acerto"));
       }
     }
+    //  LIMPA SELEÇÕES AO RECARREGAR
     window.onload = () => {
       categorias.forEach((categoria, linha) => {
         for (let col = 0; col < 5; col++) {
@@ -251,5 +281,26 @@
       });
     };
   </script>
+ 
+ <div id="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="../estrelas.js"></script>
+  <script>
+function incluirHTML(id, arquivo) {
+  return fetch(arquivo)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+    });
+}
+
+Promise.all([
+  incluirHTML("header", "../header.html"),
+  incluirHTML("footer", "../footer.html")
+]);
+
+</script>
+
 </body>
 </html>

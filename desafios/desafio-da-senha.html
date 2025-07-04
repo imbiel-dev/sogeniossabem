@@ -3,28 +3,61 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio da Senha</title>
   <link rel="stylesheet" href="../style.css">
   <style>
-    main {
-      text-align: center;
-    }
     input[type='number'] {
-      width: 50px;
-      font-size: 1.2rem;
-      text-align: center;
-      margin: 5px;
-    }
+  width: 60px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.05);
+  color: var(--branco);
+  font-size: 1.3rem;
+  text-align: center;
+  margin: 5px;
+  transition: border-color 0.3s ease;
+}
+
+input[type='number']:focus {
+  outline: none;
+  border-color: var(--roxo-claro);
+  box-shadow: 0 0 10px rgba(210,142,255,0.3);
+}
+
+button {
+  border: 1px solid rgba(255,255,255,0.4);
+  background: transparent;
+  color: var(--branco);
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  margin: 10px 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+.resultado {
+  background-color: rgba(255,255,255,0.03);
+  padding: 12px;
+  border-radius: 10px;
+  margin: 6px auto;
+  max-width: 400px;
+  color: var(--branco);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 1rem;
+}
+
     #tentativas {
       margin-top: 20px;
     }
-    .resultado {
-      background-color: #1a1a1a;
-      padding: 10px;
-      border-radius: 8px;
-      margin: 5px auto;
-      max-width: 400px;
-    }
+    
     .vitoria {
       color: lime;
       font-weight: bold;
@@ -33,60 +66,90 @@
       color: red;
       font-weight: bold;
     }
-
-    @media (max-width: 768px) {
+@media (max-width: 768px) {
   input[type='number'] {
-    width: 40px;
-    font-size: 1rem;
-    margin: 5px 4px;
+    width: 50px;
+    padding: 10px;
+    font-size: 1.1rem;
+    margin: 4px;
   }
 
   button {
-    display: block;
-    width: 90%;
-    margin: 10px auto;
-    padding: 12px;
+    padding: 10px 20px;
     font-size: 1rem;
-    border-radius: 8px;
-  }
-
-  ul {
-    font-size: 0.95rem;
-    padding: 0 10px;
+    margin: 8px 4px;
   }
 
   .resultado {
+    max-width: 90%;
     font-size: 0.95rem;
-    padding: 12px;
-    margin: 8px auto;
   }
 
-  #tentativas {
-    max-height: 300px;
-    overflow-y: auto;
+  section h2 {
+    font-size: 1.5rem;
   }
 }
 
+@media (max-width: 400px) {
+  input[type='number'] {
+    width: 45px;
+    padding: 8px;
+    font-size: 1rem;
+    margin: 4px;
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    margin: 6px 3px;
+  }
+
+  .resultado {
+    max-width: 95%;
+    font-size: 0.9rem;
+  }
+
+  section h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 375px) {
+  input[type='number'] {
+    width: 40px;
+    padding: 7px;
+    font-size: 0.9rem;
+    margin: 3px;
+  }
+
+  button {
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    margin: 5px 2px;
+  }
+
+  .resultado {
+    max-width: 95%;
+    font-size: 0.85rem;
+  }
+
+  section h2 {
+    font-size: 1.2rem;
+  }
+}
+
+
+
   </style>
   
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
-<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="icon" href="../img/favicon.png" type="image/png" sizes="512x512">
 </head>
 <body>
-  <header>
-    <h1>🧠 Só os Gênios Sabem</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Início</a></li>
-        <li><a href="../desafios.html">Desafios</a></li>
-        <li><a href="../ebook.html">eBook</a></li>
-        <li><a href="../clube.html">Clube dos Gênios</a></li>
-        <li><a href="../artigos.html">Artigos</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
+<div id="fundo-estrelas"></div>
+
+  <div id="header"></div>
+
+  <section>
     <h2>Desafio da Senha Secreta 🔐</h2>
     <p>Descubra a senha de 4 dígitos únicos entre 0 e 9. Após cada tentativa, diremos:</p>
     <ul style="text-align:left; max-width:600px; margin:auto;">
@@ -95,6 +158,7 @@
     </ul>
 
     <div>
+       <!-- Inputs para os 4 dígitos -->
       <input type="number" id="d1" min="0" max="9">
       <input type="number" id="d2" min="0" max="9">
       <input type="number" id="d3" min="0" max="9">
@@ -108,26 +172,34 @@
     <button onclick="tentarSenha()">Tentar</button>
     <button onclick="reiniciar()">🔄 Nova Senha</button>
 
+     <!-- Área onde aparecem todas as tentativas -->
     <div id="tentativas"></div>
+    <!-- Resultado final: vitória ou falha -->
     <p id="resultado"></p>
-  </main>
+  </section>
 
   <script>
+    // Guarda a senha sorteada (array de 4 dígitos únicos)
     let senha = [];
+    // Conta o número de tentativas realizadas
     let tentativas = 0;
+    // Máximo de tentativas permitidas
     const maxTentativas = 15;
 
+    // Gera uma senha aleatória com 4 dígitos únicos entre 0 e 9
     function gerarSenha() {
       senha = [];
       while (senha.length < 4) {
-        let num = Math.floor(Math.random() * 10);
-        if (!senha.includes(num)) senha.push(num);
+        let num = Math.floor(Math.random() * 10);// número aleatório de 0 a 9
+        if (!senha.includes(num)) senha.push(num);// não deixa repetir dígito
       }
     }
 
+    // Função chamada quando o jogador tenta uma senha
     function tentarSenha() {
       if (tentativas >= maxTentativas) return;
 
+      // Pega os valores dos inputs
       let tentativa = [
         parseInt(document.getElementById('d1').value),
         parseInt(document.getElementById('d2').value),
@@ -135,19 +207,16 @@
         parseInt(document.getElementById('d4').value)
       ];
 
+      // Verifica se há dígitos repetidos
       if (new Set(tentativa).size < 4) {
         alert("Cada dígito deve ser único.");
         return;
       }
 
-      if (new Set(tentativa).size < 4) {
-        alert("Cada dígito deve ser único.");
-        return;
-      }
+      let corretos = 0;    // Quantos acertou e estão na posição certa
+      let deslocados = 0;  // Quantos acertou, mas na posição errada
 
-      let corretos = 0;
-      let deslocados = 0;
-
+      // Analisa cada dígito da tentativa
       tentativa.forEach((num, i) => {
         if (senha[i] === num) {
           corretos++;
@@ -158,18 +227,23 @@
 
       tentativas++;
 
+      // Exibe a tentativa feita, e quantos dígitos corretos ou deslocados
       let log = document.createElement('div');
       log.classList.add('resultado');
       log.innerText = `Tentativa ${tentativas}: [${tentativa.join(', ')}] → ✅ ${corretos} no lugar certo, ⚠️ ${deslocados} no lugar errado.`;
       document.getElementById('tentativas').appendChild(log);
 
+      // Se acertou todos os 4 na posição certa
       if (corretos === 4) {
-        document.getElementById('resultado').innerHTML = '<span class="vitoria">🎉 Parabéns! Você descobriu a senha!</span>';
-      } else if (tentativas >= maxTentativas) {
-        document.getElementById('resultado').innerHTML = `<span class="falha">💥 Você falhou! A senha era: ${senha.join('')}</span>`;
+        document.getElementById('resultado').innerHTML = '<span class="vitoria" style="display:block;margin-top:15px;>🎉 Parabéns! Você descobriu a senha!</span>';
+      } 
+      // Se acabou as tentativas e não acertou
+      else if (tentativas >= maxTentativas) {
+        document.getElementById('resultado').innerHTML = `<span class="falha" style="display:block;margin-top:15px;>💥 Você falhou! A senha era: ${senha.join('')}</span>`;
       }
     }
 
+    // Reinicia tudo: nova senha, zera tentativas e limpa a interface
     function reiniciar() {
       gerarSenha();
       tentativas = 0;
@@ -178,7 +252,29 @@
       ["d1","d2","d3","d4"].forEach(id => document.getElementById(id).value = '');
     }
 
+    // Inicializa o jogo ao abrir a página
     gerarSenha();
   </script>
+
+<div id="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="../estrelas.js"></script>
+  <script>
+function incluirHTML(id, arquivo) {
+  return fetch(arquivo)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+    });
+}
+
+Promise.all([
+  incluirHTML("header", "../header.html"),
+  incluirHTML("footer", "../footer.html")
+]);
+
+</script>
+
 </body>
 </html>

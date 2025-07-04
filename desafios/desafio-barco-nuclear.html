@@ -1,93 +1,131 @@
+<!--desafio-barco-nuclear.html-->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafio: Cientistas, Mutantes e o Barco Nuclear</title>
   <link rel="stylesheet" href="../style.css">
   <style>
-    body { background: #111; color: #fff; font-family: Arial, sans-serif; text-align: center; }
     main {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 20px;
-      background: #1e1e1e;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.6);
-    }
-    .lado { display: flex; justify-content: space-between; margin: 20px 0; }
-    .bloco { width: 45%; background: #222; padding: 15px; border-radius: 10px; }
-    .bloco h3 { margin-top: 0; }
-    .personagem { margin: 5px 0; padding: 10px; background: #333; border-radius: 5px; cursor: pointer; user-select: none; }
-    .inBoat { background: #ff9800 !important; }
-    .barco { margin: 20px auto; background: #444; padding: 10px; border-radius: 10px; width: 90%; }
-    .log, #regras { background: #1a1a1a; margin-top: 20px; padding: 15px; border-radius: 10px; font-size: 0.95rem; }
-    button { margin: 15px 10px 0; padding: 12px 25px; font-size: 1rem; background-color: #9c27b0; color: white; border: none; border-radius: 8px; cursor: pointer; }
-    button:hover { background-color: #ab47bc; }
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 25px 15px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, var(--cinza), #120020);
+  box-shadow: 0 0 20px rgba(210, 142, 255, 0.2);
+  animation: fadeInUp 0.6s ease;
+  color: var(--branco);
+}
 
-    @media (max-width: 768px) {
-  main {
-    padding: 20px 10px;
-  }
+.lado {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  gap: 20px;
+}
 
-  .lado {
-    flex-direction: column;
-    gap: 20px;
-  }
+.bloco {
+  flex: 1 1 45%;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 10px;
+  min-width: 260px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
 
-  .bloco {
-    width: 100%;
-    font-size: 1rem;
-  }
+.bloco h3 {
+  margin-top: 0;
+  color: var(--roxo-claro);
+  text-align: center;
+}
 
-  .personagem {
-    font-size: 1.1rem;
-    padding: 12px;
-    margin: 8px 0;
-  }
+.personagem {
+  margin: 8px 0;
+  padding: 12px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.2rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
 
-  .barco {
-    width: 100%;
-    font-size: 1rem;
-  }
+.personagem:hover {
+  background: rgba(255,255,255,0.15);
+  transform: scale(1.02);
+}
 
-  button {
-    width: 100%;
-    max-width: 300px;
-    margin: 12px auto;
-    display: block;
-    font-size: 1.05rem;
-  }
+.inBoat {
+  background: #ff9800 !important;
+  color: #000;
+  font-weight: bold;
+}
 
-  .log, #regras {
-    font-size: 0.95rem;
-    text-align: left;
-  }
+.barco {
+  margin: 20px auto;
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 10px;
+  width: 95%;
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
 
-  #regras ul {
-    padding-left: 20px;
-    text-align: left;
-  }
+.barco h3 {
+  color: var(--roxo-claro);
+}
+
+.log, #regras {
+  background: rgba(255,255,255,0.03);
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  text-align: left;
+  line-height: 1.5;
+}
+
+#regras h3 {
+  color: var(--roxo-claro);
+}
+
+#regras ul {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+#regras li {
+  margin-bottom: 8px;
+}
+
+button {
+  margin: 15px 10px 0;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 30px;
+  color: var(--branco);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
 
   </style>
   
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
-<link rel="icon" href="img/favicon.png" type="image/png">
+<link rel="icon" href="../img/favicon.png" type="image/png" sizes="512x512">
 </head>
 <body>
-  <header>
-    <h1>🧠 Só os Gênios Sabem</h1>
-    <nav>
-      <ul>
-        <li><a href="../index.html">Início</a></li>
-        <li><a href="../desafios.html">Desafios</a></li>
-        <li><a href="../ebook.html">eBook</a></li>
-        <li><a href="../clube.html">Clube dos Gênios</a></li>
-        <li><a href="../artigos.html">Artigos</a></li>
-      </ul>
-    </nav>
-  </header>
+<div id="fundo-estrelas"></div>
+
+  <div id="header"></div>
+
   <main>
     <h2>🧠 Desafio: Cientistas, Mutantes e o Barco Nuclear</h2>
 
@@ -103,17 +141,21 @@
       </ul>
     </div>
 
+    <!-- Áreas dos personagens -->
     <div class="lado">
+      <!-- Base inicial: lado esquerdo -->
       <div class="bloco">
         <h3>Base Instável</h3>
         <div id="leftCharacters"></div>
       </div>
+      <!-- Zona segura: lado direito -->
       <div class="bloco">
         <h3>Zona Segura</h3>
         <div id="rightCharacters"></div>
       </div>
     </div>
 
+    <!-- Barco com botões de ação -->
     <div class="barco">
       <h3>🛶 Barco</h3>
       <div id="boat"></div>
@@ -121,6 +163,7 @@
       <button onclick="reiniciarJogo()">🔄 Reiniciar</button>
     </div>
 
+<!-- Mensagens e log do jogo -->
     <div class="log" id="log">Selecione personagens e use o barco para atravessar o rio.</div>
   </main>
 
@@ -138,13 +181,16 @@
     let characters, boat, boatSide;
 
     function reiniciarJogo() {
+      // Cria uma nova cópia dos personagens para não alterar o original
       characters = [...initialCharacters.map(c => ({ ...c }))];
-      boat = [];
-      boatSide = "left";
-      render();
+      boat = [];         // Índices dos personagens dentro do barco
+      boatSide = "left"; // Lado do rio onde está o barco ("left" ou "right")
+      render();          // Renderiza tudo na tela
     }
 
+    // Renderiza os personagens e barco no HTML
     function render() {
+      // Seletores das áreas
       const left = document.getElementById("leftCharacters");
       const right = document.getElementById("rightCharacters");
       const boatDiv = document.getElementById("boat");
@@ -152,58 +198,73 @@
       right.innerHTML = "";
       boatDiv.innerHTML = "";
 
+      // Para cada personagem, cria um elemento visual e coloca na área correta
       characters.forEach((char, index) => {
         const div = document.createElement("div");
         div.className = "personagem";
+        // Se está no barco, adiciona classe visual diferente
         if (boat.includes(index)) div.classList.add("inBoat");
         div.textContent = char.name;
+        // Clique para selecionar/desselecionar do barco
         div.onclick = () => toggleBoat(index);
 
+        // Adiciona o personagem na área correspondente
         if (boat.includes(index)) {
-          boatDiv.appendChild(div);
+          boatDiv.appendChild(div);            // No barco
         } else if (char.location === "left") {
-          left.appendChild(div);
+          left.appendChild(div);               // Lado esquerdo
         } else {
-          right.appendChild(div);
+          right.appendChild(div);              // Lado direito
         }
       });
 
-      checkStatus();
+      checkStatus(); // Verifica se o jogo acabou (vitória/derrota)
     }
 
+    // Função para colocar ou tirar personagem do barco
     function toggleBoat(index) {
       const char = characters[index];
+      // Só pode mover quem está no mesmo lado do barco e ainda não está no barco
       if (char.location !== boatSide && !boat.includes(index)) return;
 
       if (boat.includes(index)) {
+        // Se já está no barco, remove
         boat = boat.filter(i => i !== index);
       } else {
-        if (boat.length >= 2) return;
-        boat.push(index);
+        if (boat.length >= 2) return;// Máximo 2 pessoas no barco
+        boat.push(index);             // Adiciona ao barco
       }
       render();
     }
 
+    // Move o barco para o outro lado (executa a travessia)
     function moveBoat() {
+      // Não pode mover o barco vazio
       if (boat.length === 0) return log("❌ O barco não pode ir vazio.");
 
+      // Checa se há alguém apto a pilotar (mutante ou segurança)
       const pilotos = boat.filter(i =>
         ["seguranca", "mutante"].includes(characters[i].type)
       );
       if (pilotos.length === 0) return log("❌ Ninguém no barco sabe pilotar.");
 
+      // Move todos os personagens do barco para o outro lado
       boat.forEach(i => {
         characters[i].location = boatSide === "left" ? "right" : "left";
       });
-      boatSide = boatSide === "left" ? "right" : "left";
-      boat = [];
+      boatSide = boatSide === "left" ? "right" : "left"; // Troca o lado do barco
+      boat = []; // Esvazia o barco após a travessia
       render();
     }
 
+    // Checa se alguém perdeu ou ganhou, e mostra o log/status
     function checkStatus() {
+      // Separa os personagens de cada lado
       const leftSide = characters.filter(c => c.location === "left");
       const rightSide = characters.filter(c => c.location === "right");
 
+      // Função que verifica se os mutantes atacam em algum lado
+      // (Quando tem mais mutantes do que cientistas, sem segurança, e há pelo menos 1 cientista)
       const checkAttack = (side) => {
         const m = side.filter(c => c.type === "mutante").length;
         const c = side.filter(c => c.type === "cientista").length;
@@ -211,31 +272,59 @@
         return m > c && c > 0 && !s;
       };
 
+      // Se algum lado sofre ataque, fim de jogo (derrota)
       if (checkAttack(leftSide) || checkAttack(rightSide)) {
         log("💥 Os mutantes atacaram. Missão falhou.");
         disableGame();
         return;
       }
 
+// Se todos os personagens estão do lado direito, venceu!
       if (characters.every(c => c.location === "right")) {
         log("✅ Operação concluída. A humanidade está a salvo… por enquanto.");
         disableGame();
       } else {
+        // Caso contrário, ainda está jogando
         log("⏳ Continue com cuidado...");
       }
     }
 
+    // Desabilita o clique nos personagens (fim de jogo)
     function disableGame() {
       document.querySelectorAll(".personagem").forEach(el => {
         el.onclick = null;
       });
     }
 
+     // Exibe mensagem no log (div de mensagens)
     function log(msg) {
       document.getElementById("log").textContent = msg;
     }
 
+// Inicializa o jogo ao carregar a página
     reiniciarJogo();
   </script>
+
+<div id="footer"></div>
+
+<!-- Scripts de animação (estrelas) e inclusão de header/footer -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="../estrelas.js"></script>
+  <script>
+    // Função para carregar header/footer dinâmico
+function incluirHTML(id, arquivo) {
+  return fetch(arquivo)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+    });
+}
+
+Promise.all([
+  incluirHTML("header", "../header.html"),
+  incluirHTML("footer", "../footer.html")
+]);
+</script>
+
 </body>
 </html>

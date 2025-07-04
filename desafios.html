@@ -1,28 +1,34 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Desafios</title>
   <link rel="stylesheet" href="style.css">
   
-<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="icon" href="img/favicon.png" type="image/png" sizes="512x512">
 
-<link rel="icon" href="img/favicon.png" type="image/png">
+
+<meta name="description" content="Teste sua mente com enigmas, desafios e quizzes únicos. Só os gênios conseguem resolver todos. Você é um deles?">
+<meta name="keywords" content="enigmas, desafios lógicos, raciocínio, lógica, quizzes, inteligência, QI, só os gênios sabem">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Desafios - Só os Gênios Sabem",
+  "description": "Página com testes, enigmas, quizzes e desafios mentais para estimular a inteligência de forma divertida e provocadora.",
+  "url": "https://sogeniossabem.com.br/desafios.html"
+}
+</script>
+
 </head>
 <body>
-  <header>
-    <h1>🧠 Só os Gênios Sabem</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html">Início</a></li>
-        <li><a href="desafios.html">Desafios</a></li>
-        <li><a href="ebook.html">eBook</a></li>
-        <li><a href="clube.html">Clube dos Gênios</a></li>
-        <li><a href="artigos.html">Artigos</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div id="fundo-estrelas"></div>
+
+  <div id="header"></div>
+
   <main>
+    <section>
     <h2>🧩 Enigmas e Desafios Lógicos</h2>
     <ul>
       <li><a href="./desafios/einstein.html">🧠 Desafio de Einstein</a></li>
@@ -34,16 +40,40 @@
       <li><a href="desafios/desafio-conselho.html">🏛️ O Conselho das Eras</a></li>
       <li><a href="desafios/desafio-barco-nuclear.html">🧬 Barco Nuclear</a></li>
     </ul>
-
+    </section>
+    <section>
     <h2>🧪 Quizzes de Conhecimento</h2>
     <ul>
-      <li><a href="desafios/quiz-logica-raciocionio.html">🧠 Lógica & Raciocínio</a></li>
+      <li><a href="desafios/quiz-logica-raciocinio.html">🧠 Lógica & Raciocínio</a></li>
       <li><a href="desafios/quiz-ciencia-curiosidades.html">🔬 Ciência & Curiosidades Extremas</a></li>
-      <li><a href="desafios/quiz-raciocionio-matematico.html">➗ Raciocínio Matemático</a></li>
+      <li><a href="desafios/quiz-raciocinio-matematico.html">➗ Raciocínio Matemático</a></li>
       <li><a href="desafios/quiz-raciocinio-fisico.html">🌡️ Raciocínio Físico</a></li>
       <li><a href="desafios/quiz-interpretacao-frases.html">🧾 Interpretação de Frases</a></li>
       <li><a href="desafios/quiz-conhecimentos-gerais.html">🌍 Conhecimentos Gerais</a></li>
     </ul>
+    </section>
   </main>
+
+<div id="footer"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="estrelas.js"></script>
+  <script>
+function incluirHTML(id, arquivo) {
+  return fetch(arquivo)
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById(id).innerHTML = html;
+    });
+}
+
+Promise.all([
+  incluirHTML("header", "header.html"),
+  incluirHTML("footer", "footer.html")
+]).then(() => {
+  embaralharPerguntas(); // Só roda depois de incluir tudo
+});
+</script>
+
 </body>
 </html>
