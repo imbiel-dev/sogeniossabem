@@ -235,11 +235,11 @@ button:hover {
 
       // Se acertou todos os 4 na posição certa
       if (corretos === 4) {
-        document.getElementById('resultado').innerHTML = '<span class="vitoria" style="display:block;margin-top:15px;>🎉 Parabéns! Você descobriu a senha!</span>';
+        document.getElementById('resultado').innerHTML = '<span class="vitoria" style="display:block;margin-top:15px;font-size:1.3rem;">🎉 Parabéns! Você descobriu a senha!</span>';
       } 
       // Se acabou as tentativas e não acertou
       else if (tentativas >= maxTentativas) {
-        document.getElementById('resultado').innerHTML = `<span class="falha" style="display:block;margin-top:15px;>💥 Você falhou! A senha era: ${senha.join('')}</span>`;
+        document.getElementById('resultado').innerHTML = `<span class="falha" style="display:block;margin-top:15px;font-size:1.3rem;">💥 Você falhou! A senha era: ${senha.join('')}</span>`;
       }
     }
 
